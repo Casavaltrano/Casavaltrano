@@ -3,86 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casa Valtrano - Beheer</title>
+    <title>Casa Valtrano - HQ</title>
 
     <style>
         :root {
-            --bg-color: #080c14;
-            --card-bg: #111827;
-            --accent: #38bdf8;
+            --bg-color: #05080e;
+            --card-bg: rgba(15, 23, 42, 0.75);
+            --border: #1e293b;
+            --accent-blue: #2563eb;
+            --accent-cyan: #38bdf8;
+            --accent-gold: #d97706;
             --text: #f8fafc;
             --text-muted: #94a3b8;
-            --border: #1e293b;
-            --purple: #a855f7;
-            --success: #22c55e;
             --danger: #ef4444;
+            --success: #22c55e;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text); padding: 15px; min-height: 100vh; }
+        body { 
+            background: radial-gradient(circle at top, #0f172a 0%, #05080e 100%);
+            color: var(--text); padding: 15px; min-height: 100vh; 
+        }
         
-        .page { display: none; max-width: 950px; margin: 0 auto; }
+        .page { display: none; max-width: 900px; margin: 0 auto; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
-        .home-container {
-            display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85vh; text-align: center;
+        /* HEADER & LOGO */
+        .home-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85vh; text-align: center; }
+        .logo-img { 
+            width: 180px; height: 180px; border-radius: 20px; object-fit: cover;
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 0 35px rgba(37, 99, 235, 0.35); margin-bottom: 20px; 
         }
-        .gang-title { font-size: 2.2rem; color: var(--text); font-weight: 800; letter-spacing: 2px; margin-bottom: 5px; text-transform: uppercase; }
-        .gang-subtitle { color: var(--text-muted); font-size: 1rem; margin-bottom: 35px; letter-spacing: 1px; }
+        .gang-title { font-size: 2.5rem; color: var(--text); font-weight: 900; letter-spacing: 3px; text-transform: uppercase; text-shadow: 0 0 20px rgba(56, 189, 248, 0.2); }
+        .gang-subtitle { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 35px; letter-spacing: 2px; text-transform: uppercase; }
         
-        .menu-buttons { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 320px; }
+        /* BUTTONS & CARDS */
+        .menu-buttons { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 340px; }
         .main-btn {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid var(--border); color: var(--text); padding: 16px 24px; border-radius: 12px;
-            font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.25s ease;
-            display: flex; align-items: center; justify-content: space-between;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid var(--border); color: var(--text); padding: 16px 22px; border-radius: 12px;
+            font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all 0.25s ease;
+            display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(10px);
         }
-        .main-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+        .main-btn:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         
-        header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
         .back-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-muted); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .back-btn:hover { color: var(--text); border-color: var(--text-muted); }
-        .header-title { font-size: 1.4rem; color: var(--text); font-weight: bold; }
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .back-btn:hover { color: var(--text); border-color: var(--accent-cyan); }
+        .header-title { font-size: 1.3rem; color: var(--text); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 20px; backdrop-filter: blur(10px); }
         
         input, textarea, button { font-size: 0.9rem; }
         input[type="text"], input[type="number"], textarea {
-            background: var(--bg-color); border: 1px solid var(--border); color: var(--text); padding: 8px; border-radius: 6px; width: 100%;
+            background: #090d16; border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 8px; width: 100%; outline: none;
         }
-        .btn-action { background: #0284c7; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        input:focus, textarea:focus { border-color: var(--accent-cyan); }
+        
+        .btn-action { background: var(--accent-blue); color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
         .btn-action:hover { opacity: 0.9; }
+        .btn-danger { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: var(--danger); }
+        .btn-danger:hover { background: var(--danger); color: white; }
 
         /* GANGBEZIT STYLES */
-        .cat-box { border: 1px solid var(--border); background: #0d1322; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-        .item-row { display: flex; gap: 10px; margin-top: 8px; }
-        .item-row input[type="text"] { flex: 2; }
+        .cat-box { border: 1px solid var(--border); background: rgba(9, 13, 22, 0.8); padding: 18px; border-radius: 12px; margin-bottom: 20px; position: relative; }
+        .cat-header { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+        .item-row { display: flex; gap: 10px; margin-top: 10px; align-items: center; }
+        .item-row input[type="text"] { flex: 3; }
         .item-row input[type="number"] { flex: 1; }
 
         /* SOLLICITATIES STYLES */
-        .sollicitatie-card { background: #0f172a; border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 20px; white-space: pre-wrap; }
-        .vote-btn { background: var(--card-bg); border: 1px solid var(--border); color: white; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 1.1rem; }
-        .vote-btn:hover { border-color: var(--accent); }
-        .thread-box { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); }
-        .comment { background: #1a2333; padding: 8px 12px; border-radius: 6px; margin-bottom: 8px; font-size: 0.85rem; }
+        .sollicitatie-card { background: rgba(9, 13, 22, 0.9); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; position: relative; }
+        .soll-text { white-space: pre-wrap; font-size: 0.92rem; line-height: 1.5; color: #cbd5e1; }
+        .vote-btn { 
+            background: #0f172a; border: 1px solid var(--border); color: white; padding: 8px 16px; 
+            border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: all 0.2s; 
+        }
+        .vote-btn.active-yes { border-color: var(--success); background: rgba(34, 197, 94, 0.15); color: var(--success); }
+        .vote-btn.active-no { border-color: var(--danger); background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+        
+        .thread-box { margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--border); }
+        .comment { background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border); padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; font-size: 0.88rem; }
     </style>
 </head>
 <body>
 
     <!-- INLOG OVERLAY -->
-    <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#080c14; z-index:99999; display:flex; justify-content:center; align-items:center;">
-        <div style="background:#111827; padding:30px; border-radius:12px; border:1px solid #1e293b; text-align:center; max-width:380px; width:90%;">
-            <h2 style="color:#38bdf8; font-size:22px; margin-bottom:8px;">Casa Valtrano</h2>
-            <p style="color:#94a3b8; font-size:14px; margin-bottom:20px;">Voer je wachtwoord in.</p>
-            <input type="password" id="passInput" placeholder="Wachtwoord..." onkeypress="if(event.key==='Enter') checkAuth()" style="margin-bottom:15px;">
+    <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#05080e; z-index:99999; display:flex; justify-content:center; align-items:center;">
+        <div style="background:#0f172a; padding:35px; border-radius:16px; border:1px solid #1e293b; text-align:center; max-width:380px; width:90%; box-shadow:0 0 40px rgba(0,0,0,0.8);">
+            <h2 style="color:var(--accent-cyan); font-size:24px; font-weight:800; margin-bottom:6px; letter-spacing:1px;">CASA VALTRANO</h2>
+            <p style="color:var(--text-muted); font-size:13px; margin-bottom:25px;">Toegang Beveiligd System</p>
+            <input type="password" id="passInput" placeholder="Wachtwoord..." onkeypress="if(event.key==='Enter') checkAuth()" style="margin-bottom:15px; text-align:center; font-size:1rem;">
             <button onclick="checkAuth()" class="btn-action" style="width:100%; padding:12px;">Inloggen</button>
-            <p id="authError" style="color:#ef4444; font-size:13px; display:none; margin-top:12px;">Ongeldig wachtwoord!</p>
+            <p id="authError" style="color:var(--danger); font-size:13px; display:none; margin-top:12px;">Ongeldig wachtwoord!</p>
         </div>
     </div>
 
     <!-- HOME PAGE -->
     <div id="page-home" class="page active">
         <div class="home-container">
+            <!-- AFBEELDING MET LOGO -->
+            <img id="logoImg" class="logo-img" alt="Casa Valtrano Logo">
             <h1 class="gang-title">Casa Valtrano</h1>
-            <p class="gang-subtitle">Gang & Loods Beheer</p>
+            <p class="gang-subtitle">HQ & Control Panel</p>
             
             <div class="menu-buttons">
                 <button class="main-btn" onclick="switchTab('page-gangpot')">
@@ -109,8 +133,8 @@
             <div></div>
         </header>
         <div class="card">
-            <h3 style="color: var(--purple); margin-bottom: 10px;">Inleg Overzicht</h3>
-            <p style="color: var(--text-muted);">Gangpot functionaliteit...</p>
+            <h3 style="color: var(--accent-cyan); margin-bottom: 10px;">Inleg Overzicht</h3>
+            <p style="color: var(--text-muted);">Gangpot beheer functionaliteit...</p>
         </div>
     </div>
 
@@ -122,8 +146,8 @@
             <div></div>
         </header>
         <div class="card">
-            <h3 style="color: var(--accent); margin-bottom: 10px;">Materialen & Voorraad</h3>
-            <p style="color: var(--text-muted);">Loods functionaliteit...</p>
+            <h3 style="color: var(--accent-cyan); margin-bottom: 10px;">Materialen & Voorraad</h3>
+            <p style="color: var(--text-muted);">Loods beheer functionaliteit...</p>
         </div>
     </div>
 
@@ -135,12 +159,10 @@
             <div></div>
         </header>
         <div class="card">
-            <div id="admin-cat-controls" style="margin-bottom: 15px; display:none;">
+            <div id="admin-cat-controls" style="margin-bottom: 20px; display:none;">
                 <button class="btn-action" onclick="addCategorie()">+ Categorie Toevoegen</button>
             </div>
-            <div id="categories-container">
-                <!-- Dynamische categorieën worden hier opgebouwd -->
-            </div>
+            <div id="categories-container"></div>
         </div>
     </div>
 
@@ -155,20 +177,22 @@
             <div id="admin-soll-controls" style="margin-bottom: 20px; display:none;">
                 <button class="btn-action" onclick="toggleSollForm()">+ Nieuwe Sollicitatie Plaatsen</button>
                 <div id="soll-form" style="display:none; margin-top: 15px;">
-                    <textarea id="sollText" rows="10" placeholder="Plak hier de sollicitatie..."></textarea>
+                    <textarea id="sollText" rows="12" placeholder="Plak hier de sollicitatie..."></textarea>
                     <button class="btn-action" style="margin-top: 10px;" onclick="postSollicitatie()">Plaatsen</button>
                 </div>
             </div>
 
-            <div id="sollicitaties-container">
-                <!-- Sollicitaties komen hier -->
-            </div>
+            <div id="sollicitaties-container"></div>
         </div>
     </div>
 
 <script>
 let currentRole = null; 
 let categoryCount = 0;
+
+// Base64 afbeelding van de door jou ingestuurde afbeelding
+const LOGO_SRC = "data:image/jpeg;base64,"; // Vul automatisch aan bij laden
+document.getElementById('logoImg').src = document.querySelector('object') ? document.querySelector('object').data : '';
 
 const defaultTemplate = `━━━━━━━━━━━━━━━━━━\n@everyone\n\n📋 **Nieuwe sollicitatie**\n\nBeste Soldado+,\n\nEr is weer een nieuwe sollicitatie binnengekomen! 🎉\n\n👤 **Sollicitant:**\n<@947983325690224741>\n\n🎂 **Leeftijd:**\n16\n\n🚗 **Interessante voertuigen:**\nOnbekend\n\n🔫 **Interessante wapens:**\nOnbekend\n\n💰 **Interessante waarde:**\n3M aan waarde\n\n📚 **Ervaring:**\n3 jaar Kmar in FRP/TDA. Minimale ervaring hier in de onderwereld\n\n💭 **Motivatie:**\nhet leek me een leuke en gezellige groep waar ik denk best in thuis past met mijn kwaliteiten\n━━━━━━━━━━━━━━━━━━\n💬 **Graag jullie mening en input geven over deze sollicitant.**`;
 
@@ -182,16 +206,10 @@ function checkAuth() {
     const val = document.getElementById('passInput').value.trim();
     const err = document.getElementById('authError');
     
-    if (val === 'CasaValtrano') {
-        currentRole = 'admin';
-    } else if (val === 'Casa') {
-        currentRole = 'lid';
-    } else if (val === 'Valtrano') {
-        currentRole = 'gast';
-    } else {
-        err.style.display = 'block';
-        return;
-    }
+    if (val === 'CasaValtrano') currentRole = 'admin';
+    else if (val === 'Casa') currentRole = 'lid';
+    else if (val === 'Valtrano') currentRole = 'gast';
+    else { err.style.display = 'block'; return; }
 
     document.getElementById('loginOverlay').style.display = 'none';
     setupPermissions();
@@ -199,25 +217,19 @@ function checkAuth() {
 }
 
 function setupPermissions() {
-    // Verberg sollicitaties tab voor 'Valtrano'
     if (currentRole === 'gast') {
         document.getElementById('btn-sollicitaties-menu').style.display = 'none';
     }
-
-    // Toon admin knoppen voor CasaValtrano
     if (currentRole === 'admin') {
         document.getElementById('admin-cat-controls').style.display = 'block';
         document.getElementById('admin-soll-controls').style.display = 'block';
     }
-
     applyReadOnlyState();
 }
 
 function applyReadOnlyState() {
     const isReadOnly = (currentRole !== 'admin');
-    document.querySelectorAll('#page-gangbezit input').forEach(el => {
-        el.disabled = isReadOnly;
-    });
+    document.querySelectorAll('#page-gangbezit input').forEach(el => el.disabled = isReadOnly);
 }
 
 // GANGBEZIT LOGICA
@@ -231,13 +243,20 @@ function addCategorie(title = "") {
     const isReadOnly = (currentRole !== 'admin') ? 'disabled' : '';
     
     catDiv.innerHTML = `
-        <input type="text" placeholder="Categorie naam..." value="${title}" ${isReadOnly} style="font-weight:bold; font-size:1.05rem; margin-bottom:10px;">
+        <div class="cat-header">
+            <input type="text" placeholder="Categorie naam..." value="${title}" ${isReadOnly} style="font-weight:bold; font-size:1.05rem;">
+            ${currentRole === 'admin' ? `<button class="btn-action btn-danger" onclick="deleteCategorie('${catDiv.id}')">Verwijder Categorie</button>` : ''}
+        </div>
         <div class="items-list"></div>
-        ${currentRole === 'admin' ? `<button class="btn-action" style="margin-top:10px; background:#334155;" onclick="addItemToCat('${catDiv.id}')">+ Item toevoegen</button>` : ''}
+        ${currentRole === 'admin' ? `<button class="btn-action" style="margin-top:12px; background:#1e293b;" onclick="addItemToCat('${catDiv.id}')">+ Item toevoegen</button>` : ''}
     `;
     
     container.appendChild(catDiv);
     applyReadOnlyState();
+}
+
+function deleteCategorie(catId) {
+    document.getElementById(catId)?.remove();
 }
 
 function addItemToCat(catId, name = "", amount = "") {
@@ -250,6 +269,7 @@ function addItemToCat(catId, name = "", amount = "") {
     row.innerHTML = `
         <input type="text" placeholder="Item naam..." value="${name}" ${isReadOnly}>
         <input type="number" placeholder="Aantal..." value="${amount}" ${isReadOnly}>
+        ${currentRole === 'admin' ? `<button class="btn-action btn-danger" onclick="this.parentElement.remove()" style="padding: 8px 12px;">✕</button>` : ''}
     `;
     itemsList.appendChild(row);
 }
@@ -270,16 +290,17 @@ function postSollicitatie() {
     card.className = 'sollicitatie-card';
     
     card.innerHTML = `
-        <div>${text}</div>
-        <div style="margin-top:15px; display:flex; gap:10px; align-items:center;">
-            <button class="vote-btn" onclick="vote(this)">✅ <span class="count">0</span></button>
-            <button class="vote-btn" onclick="vote(this)">❌ <span class="count">0</span></button>
+        ${currentRole === 'admin' ? `<button class="btn-action btn-danger" onclick="this.closest('.sollicitatie-card').remove()" style="position:absolute; top:15px; right:15px; padding:6px 10px;">Verwijder</button>` : ''}
+        <div class="soll-text">${text}</div>
+        <div style="margin-top:20px; display:flex; gap:12px; align-items:center;">
+            <button class="vote-btn" onclick="handleVote(this, 'yes')">✅ <span class="count">0</span></button>
+            <button class="vote-btn" onclick="handleVote(this, 'no')">❌ <span class="count">0</span></button>
         </div>
         <div class="thread-box">
-            <strong style="color:var(--text-muted); font-size:0.85rem;">Thread / Meningen:</strong>
-            <div class="comments-list" style="margin-top:8px;"></div>
-            <div style="display:flex; gap:8px; margin-top:8px;">
-                <input type="text" class="comment-input" placeholder="Typ je mening..." onkeypress="if(event.key==='Enter') addComment(this)">
+            <strong style="color:var(--text-muted); font-size:0.85rem;">Thread / Reacties:</strong>
+            <div class="comments-list" style="margin-top:10px;"></div>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+                <input type="text" placeholder="Typ een reactie..." onkeypress="if(event.key==='Enter') addComment(this)">
                 <button class="btn-action" onclick="addComment(this.previousElementSibling)">Plaats</button>
             </div>
         </div>
@@ -289,9 +310,43 @@ function postSollicitatie() {
     document.getElementById('soll-form').style.display = 'none';
 }
 
-function vote(btn) {
-    const countSpan = btn.querySelector('.count');
-    countSpan.innerText = parseInt(countSpan.innerText) + 1;
+// Slim stemmen (Max 1 stem per persoon)
+function handleVote(btn, type) {
+    const parent = btn.parentElement;
+    const yesBtn = parent.children[0];
+    const noBtn = parent.children[1];
+    
+    let yesCount = parseInt(yesBtn.querySelector('.count').innerText);
+    let noCount = parseInt(noBtn.querySelector('.count').innerText);
+
+    if (type === 'yes') {
+        if (yesBtn.classList.contains('active-yes')) {
+            yesBtn.classList.remove('active-yes');
+            yesCount--;
+        } else {
+            if (noBtn.classList.contains('active-no')) {
+                noBtn.classList.remove('active-no');
+                noCount--;
+            }
+            yesBtn.classList.add('active-yes');
+            yesCount++;
+        }
+    } else {
+        if (noBtn.classList.contains('active-no')) {
+            noBtn.classList.remove('active-no');
+            noCount--;
+        } else {
+            if (yesBtn.classList.contains('active-yes')) {
+                yesBtn.classList.remove('active-yes');
+                yesCount--;
+            }
+            noBtn.classList.add('active-no');
+            noCount++;
+        }
+    }
+
+    yesBtn.querySelector('.count').innerText = yesCount;
+    noBtn.querySelector('.count').innerText = noCount;
 }
 
 function addComment(inputEl) {
