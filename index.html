@@ -143,22 +143,38 @@ function checkAuth() {
     } else {
         err.style.display = 'block';
     }
-}
-
-function applyPermissions() {
+}function applyPermissions() {
     if (userRole === 'lid') {
-        // Gangpot tab afschermen voor bewerken
-        const gangpotSec = document.getElementById('page-gangpot');
-        if (gangpotSec) {
-            const inputs = gangpotSec.querySelectorAll('input, button, select, textarea');
+
+        // Gang Inleg: alleen bekijken
+        const gangInlegSec = document.getElementById('gang-inleg');
+        if (gangInlegSec) {
+            const inputs = gangInlegSec.querySelectorAll('input, textarea, select, button');
+
             inputs.forEach(el => {
                 el.disabled = true;
-                el.style.opacity = '0.4';
+                el.style.opacity = '0.5';
                 el.style.pointerEvents = 'none';
             });
         }
+
+        // Gangpot: alleen bekijken
+        const gangpotSec = document.getElementById('page-gangpot');
+        if (gangpotSec) {
+            const inputs = gangpotSec.querySelectorAll('input, textarea, select, button');
+
+            inputs.forEach(el => {
+                el.disabled = true;
+                el.style.opacity = '0.5';
+                el.style.pointerEvents = 'none';
+            });
+        }
+
+        // Loods blijft volledig bewerkbaar
     }
 }
+
+
 
 // Check ook na eventuele tab wissels
 document.addEventListener('DOMContentLoaded', () => {
