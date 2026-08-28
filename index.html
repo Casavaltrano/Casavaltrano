@@ -1,9 +1,9 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casa Valtrano - Gang & Loods Beheer</title>
+    <title>Casa Valtrano - Beheer</title>
 
     <style>
         :root {
@@ -14,51 +14,55 @@
             --text-muted: #94a3b8;
             --border: #1e293b;
             --purple: #a855f7;
-            --blue-accent: #2563eb;
+            --success: #22c55e;
+            --danger: #ef4444;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text); padding: 15px; min-height: 100vh; }
         
-        /* SCHERMEN VERBERGEN/TONEN */
         .page { display: none; max-width: 950px; margin: 0 auto; }
         .page.active { display: block; }
         
-        /* HOME / LANDING PAGE */
         .home-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 85vh;
-            text-align: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85vh; text-align: center;
         }
         .gang-title { font-size: 2.2rem; color: var(--text); font-weight: 800; letter-spacing: 2px; margin-bottom: 5px; text-transform: uppercase; }
         .gang-subtitle { color: var(--text-muted); font-size: 1rem; margin-bottom: 35px; letter-spacing: 1px; }
         
-        .menu-buttons { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px; }
+        .menu-buttons { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 320px; }
         .main-btn {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 16px 24px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            border: 1px solid var(--border); color: var(--text); padding: 16px 24px; border-radius: 12px;
+            font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.25s ease;
+            display: flex; align-items: center; justify-content: space-between;
         }
         .main-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-        .main-btn.btn-gangpot:hover { border-color: var(--purple); color: var(--purple); }
         
-        /* HEADER & BUTTONS */
         header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
         .back-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-muted); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .back-btn:hover { color: var(--text); border-color: var(--text-muted); }
         .header-title { font-size: 1.4rem; color: var(--text); font-weight: bold; }
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        
+        input, textarea, button { font-size: 0.9rem; }
+        input[type="text"], input[type="number"], textarea {
+            background: var(--bg-color); border: 1px solid var(--border); color: var(--text); padding: 8px; border-radius: 6px; width: 100%;
+        }
+        .btn-action { background: #0284c7; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .btn-action:hover { opacity: 0.9; }
+
+        /* GANGBEZIT STYLES */
+        .cat-box { border: 1px solid var(--border); background: #0d1322; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .item-row { display: flex; gap: 10px; margin-top: 8px; }
+        .item-row input[type="text"] { flex: 2; }
+        .item-row input[type="number"] { flex: 1; }
+
+        /* SOLLICITATIES STYLES */
+        .sollicitatie-card { background: #0f172a; border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 20px; white-space: pre-wrap; }
+        .vote-btn { background: var(--card-bg); border: 1px solid var(--border); color: white; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 1.1rem; }
+        .vote-btn:hover { border-color: var(--accent); }
+        .thread-box { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); }
+        .comment { background: #1a2333; padding: 8px 12px; border-radius: 6px; margin-bottom: 8px; font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -67,9 +71,9 @@
     <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#080c14; z-index:99999; display:flex; justify-content:center; align-items:center;">
         <div style="background:#111827; padding:30px; border-radius:12px; border:1px solid #1e293b; text-align:center; max-width:380px; width:90%;">
             <h2 style="color:#38bdf8; font-size:22px; margin-bottom:8px;">Casa Valtrano</h2>
-            <p style="color:#94a3b8; font-size:14px; margin-bottom:20px;">Voer het wachtwoord in.</p>
-            <input type="password" id="passInput" placeholder="Wachtwoord..." onkeypress="if(event.key==='Enter') checkAuth()" style="width:100%; padding:12px; border-radius:6px; border:1px solid #334155; background:#0f172a; color:#fff; font-size:15px; margin-bottom:15px; outline:none;">
-            <button onclick="checkAuth()" style="width:100%; padding:12px; background:#0284c7; color:#fff; border:none; border-radius:6px; font-weight:bold; font-size:15px; cursor:pointer;">Inloggen</button>
+            <p style="color:#94a3b8; font-size:14px; margin-bottom:20px;">Voer je wachtwoord in.</p>
+            <input type="password" id="passInput" placeholder="Wachtwoord..." onkeypress="if(event.key==='Enter') checkAuth()" style="margin-bottom:15px;">
+            <button onclick="checkAuth()" class="btn-action" style="width:100%; padding:12px;">Inloggen</button>
             <p id="authError" style="color:#ef4444; font-size:13px; display:none; margin-top:12px;">Ongeldig wachtwoord!</p>
         </div>
     </div>
@@ -81,13 +85,17 @@
             <p class="gang-subtitle">Gang & Loods Beheer</p>
             
             <div class="menu-buttons">
-                <button class="main-btn btn-gangpot" onclick="switchTab('page-gangpot')">
-                    <span>Gangpot</span>
-                    <span>&rarr;</span>
+                <button class="main-btn" onclick="switchTab('page-gangpot')">
+                    <span>Gangpot</span><span>&rarr;</span>
                 </button>
-                <button class="main-btn btn-loods" onclick="switchTab('page-loods')">
-                    <span>Loods Beheer</span>
-                    <span>&rarr;</span>
+                <button class="main-btn" onclick="switchTab('page-loods')">
+                    <span>Loods Beheer</span><span>&rarr;</span>
+                </button>
+                <button class="main-btn" onclick="switchTab('page-gangbezit')">
+                    <span>Gangbezit</span><span>&rarr;</span>
+                </button>
+                <button class="main-btn" id="btn-sollicitaties-menu" onclick="switchTab('page-sollicitaties')">
+                    <span>Sollicitaties</span><span>&rarr;</span>
                 </button>
             </div>
         </div>
@@ -100,10 +108,9 @@
             <div class="header-title">Gangpot Beheer</div>
             <div></div>
         </header>
-
         <div class="card">
             <h3 style="color: var(--purple); margin-bottom: 10px;">Inleg Overzicht</h3>
-            <p style="color: var(--text-muted);">De pagina werkt! Hier komt straks de inleg-data uit Supabase.</p>
+            <p style="color: var(--text-muted);">Inhoud van Gangpot...</p>
         </div>
     </div>
 
@@ -114,36 +121,204 @@
             <div class="header-title">Loods Inventaris</div>
             <div></div>
         </header>
-
         <div class="card">
             <h3 style="color: var(--accent); margin-bottom: 10px;">Materialen & Voorraad</h3>
-            <p style="color: var(--text-muted);">De pagina werkt! Hier komt straks de loods-inventaris uit Supabase.</p>
+            <p style="color: var(--text-muted);">Inhoud van Loods...</p>
+        </div>
+    </div>
+
+    <!-- GANGBEZIT PAGE -->
+    <div id="page-gangbezit" class="page">
+        <header>
+            <button class="back-btn" onclick="switchTab('page-home')">&larr; Terug</button>
+            <div class="header-title">Gangbezit</div>
+            <div></div>
+        </header>
+        <div class="card">
+            <div id="admin-cat-controls" style="margin-bottom: 15px; display:none;">
+                <button class="btn-action" onclick="addCategorie()">+ Categorie Toevoegen</button>
+            </div>
+            <div id="categories-container">
+                <!-- Dynamische categorieën komen hier -->
+            </div>
+        </div>
+    </div>
+
+    <!-- SOLLICITATIES PAGE -->
+    <div id="page-sollicitaties" class="page">
+        <header>
+            <button class="back-btn" onclick="switchTab('page-home')">&larr; Terug</button>
+            <div class="header-title">Sollicitaties</div>
+            <div></div>
+        </header>
+        <div class="card">
+            <div id="admin-soll-controls" style="margin-bottom: 20px; display:none;">
+                <button class="btn-action" onclick="toggleSollForm()">+ Nieuwe Sollicitatie Plaatsen</button>
+                <div id="soll-form" style="display:none; margin-top: 15px;">
+                    <textarea id="sollText" rows="10" placeholder="Plak hier de sollicitatie..."></textarea>
+                    <button class="btn-action" style="margin-top: 10px;" onclick="postSollicitatie()">Plaatsen</button>
+                </div>
+            </div>
+
+            <div id="sollicitaties-container">
+                <!-- Sollicitaties komen hier -->
+            </div>
         </div>
     </div>
 
 <script>
-// NAVIGATIE FUNCTIE
+let currentRole = null; // 'admin' (CasaValtrano), 'lid' (Casa), 'gast' (Valtrano)
+let categoryCount = 0;
+
+// Default sjabloon tekst
+const defaultTemplate = `━━━━━━━━━━━━━━━━━━\n@everyone\n\n📋 **Nieuwe sollicitatie**\n\nBeste Soldado+,\n\nEr is weer een nieuwe sollicitatie binnengekomen! 🎉\n\n👤 **Sollicitant:**\n<@947983325690224741>\n\n🎂 **Leeftijd:**\n16\n\n🚗 **Interessante voertuigen:**\nOnbekend\n\n🔫 **Interessante wapens:**\nOnbekend\n\n💰 **Interessante waarde:**\n3M aan waarde\n\n📚 **Ervaring:**\n3 jaar Kmar in FRP/TDA. Minimale ervaring hier in de onderwereld\n\n💭 **Motivatie:**\nhet leek me een leuke en gezellige groep waar ik denk best in thuis past met mijn kwaliteiten\n━━━━━━━━━━━━━━━━━━\n💬 **Graag jullie mening en input geven over deze sollicitant.**`;
+
 function switchTab(tabId) {
-    // Verberg alle pagina's
-    document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-    });
-    // Toon de gekozen pagina
+    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     const target = document.getElementById(tabId);
-    if (target) {
-        target.classList.add('active');
-    }
+    if (target) target.classList.add('active');
 }
 
-// INLOG FUNCTIE
 function checkAuth() {
     const val = document.getElementById('passInput').value.trim();
     const err = document.getElementById('authError');
     
-    if (val === 'Casa' || val === 'CasaValtrano') {
-        document.getElementById('loginOverlay').style.display = 'none';
+    if (val === 'CasaValtrano') {
+        currentRole = 'admin';
+    } else if (val === 'Casa') {
+        currentRole = 'lid';
+    } else if (val === 'Valtrano') {
+        currentRole = 'gast';
     } else {
         err.style.display = 'block';
+        return;
+    }
+
+    document.getElementById('loginOverlay').style.display = 'none';
+    setupPermissions();
+    initDefaultContent();
+}
+
+function setupPermissions() {
+    // Verberg sollicitaties tab voor 'Valtrano' (gast)
+    if (currentRole === 'gast') {
+        document.getElementById('btn-sollicitaties-menu').style.display = 'none';
+    }
+
+    // Toon admin knoppen voor CasaValtrano
+    if (currentRole === 'admin') {
+        document.getElementById('admin-cat-controls').style.display = 'block';
+        document.getElementById('admin-soll-controls').style.display = 'block';
+    }
+
+    applyReadOnlyState();
+}
+
+function applyReadOnlyState() {
+    const isReadOnly = (currentRole !== 'admin');
+    document.querySelectorAll('#page-gangbezit input').forEach(el => {
+        el.disabled = isReadOnly;
+    });
+}
+
+// GANGBEZIT LOGICA
+function addCategorie(title = "") {
+    categoryCount++;
+    const container = document.getElementById('categories-container');
+    const catDiv = document.createElement('div');
+    catDiv.className = 'cat-box';
+    catDiv.id = `cat-${categoryCount}`;
+    
+    const isReadOnly = (currentRole !== 'admin') ? 'disabled' : '';
+    
+    catDiv.innerHTML = `
+        <input type="text" placeholder="Categorie naam (bijv. Vloeistof)..." value="${title}" ${isReadOnly} style="font-weight:bold; font-size:1.05rem; margin-bottom:10px;">
+        <div class="items-list"></div>
+        ${currentRole === 'admin' ? `<button class="btn-action" style="margin-top:10px; background:#334155;" onclick="addItemToCat('${catDiv.id}')">+ Item toevoegen</button>` : ''}
+    `;
+    
+    container.appendChild(catDiv);
+    applyReadOnlyState();
+}
+
+function addItemToCat(catId, name = "", amount = "") {
+    const cat = document.getElementById(catId);
+    const itemsList = cat.querySelector('.items-list');
+    const isReadOnly = (currentRole !== 'admin') ? 'disabled' : '';
+
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+        <input type="text" placeholder="Item naam (bijv. Water)..." value="${name}" ${isReadOnly}>
+        <input type="number" placeholder="Aantal..." value="${amount}" ${isReadOnly}>
+    `;
+    itemsList.appendChild(row);
+}
+
+// SOLLICITATIES LOGICA
+function toggleSollForm() {
+    const form = document.getElementById('soll-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    document.getElementById('sollText').value = defaultTemplate;
+}
+
+function postSollicitatie() {
+    const text = document.getElementById('sollText').value;
+    if (!text) return;
+
+    const container = document.getElementById('sollicitaties-container');
+    const card = document.createElement('div');
+    card.className = 'sollicitatie-card';
+    
+    card.innerHTML = `
+        <div>${text}</div>
+        <div style="margin-top:15px; display:flex; gap:10px; align-items:center;">
+            <button class="vote-btn" onclick="vote(this, 'yes')">✅ <span class="count">0</span></button>
+            <button class="vote-btn" onclick="vote(this, 'no')">❌ <span class="count">0</span></button>
+        </div>
+        <div class="thread-box">
+            <strong style="color:var(--text-muted); font-size:0.85rem;">Thread / Meningen:</strong>
+            <div class="comments-list" style="margin-top:8px;"></div>
+            <div style="display:flex; gap:8px; margin-top:8px;">
+                <input type="text" class="comment-input" placeholder="Typ je mening..." onkeypress="if(event.key==='Enter') addComment(this)">
+                <button class="btn-action" onclick="addComment(this.previousElementSibling)">Plaats</button>
+            </div>
+        </div>
+    `;
+
+    container.prepend(card);
+    document.getElementById('soll-form').style.display = 'none';
+}
+
+function vote(btn, type) {
+    const countSpan = btn.querySelector('.count');
+    countSpan.innerText = parseInt(countSpan.innerText) + 1;
+}
+
+function addComment(inputEl) {
+    const val = inputEl.value.trim();
+    if (!val) return;
+    
+    const commentsList = inputEl.closest('.thread-box').querySelector('.comments-list');
+    const comment = document.createElement('div');
+    comment.className = 'comment';
+    comment.innerText = val;
+    
+    commentsList.appendChild(comment);
+    inputEl.value = '';
+}
+
+// Standaard velden klaarzetten bij eerste start
+function initDefaultContent() {
+    if (document.getElementById('categories-container').children.length === 0) {
+        // Maak 8 standaard categorieën zoals gevraagd
+        const counts = [6, 5, 5, 7, 2, 13, 5, 5];
+        counts.forEach((itemCount, idx) => {
+            addCategorie(`Categorie ${idx + 1}`);
+            for (let i = 0; i < itemCount; i++) {
+                addItemToCat(`cat-${idx + 1}`);
+            }
+        });
     }
 }
 </script>
