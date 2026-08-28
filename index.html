@@ -149,7 +149,7 @@ function checkAuth() {
         // Gang Inleg: alleen bekijken
         const gangInlegSec = document.getElementById('gang-inleg');
         if (gangInlegSec) {
-            const inputs = gangInlegSec.querySelectorAll('input, textarea, select, button');
+            const inputs = gangInlegSec.querySelectorAll('input, textarea, select, .reset-btn');
 
             inputs.forEach(el => {
                 el.disabled = true;
@@ -161,7 +161,7 @@ function checkAuth() {
         // Gangpot: alleen bekijken
         const gangpotSec = document.getElementById('page-gangpot');
         if (gangpotSec) {
-            const inputs = gangpotSec.querySelectorAll('input, textarea, select, button');
+            const inputs = gangpotSec.querySelectorAll('input, textarea, select, .reset-btn');
 
             inputs.forEach(el => {
                 el.disabled = true;
