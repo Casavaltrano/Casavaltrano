@@ -110,7 +110,7 @@
         </header>
         <div class="card">
             <h3 style="color: var(--purple); margin-bottom: 10px;">Inleg Overzicht</h3>
-            <p style="color: var(--text-muted);">Inhoud van Gangpot...</p>
+            <p style="color: var(--text-muted);">Gangpot functionaliteit...</p>
         </div>
     </div>
 
@@ -123,7 +123,7 @@
         </header>
         <div class="card">
             <h3 style="color: var(--accent); margin-bottom: 10px;">Materialen & Voorraad</h3>
-            <p style="color: var(--text-muted);">Inhoud van Loods...</p>
+            <p style="color: var(--text-muted);">Loods functionaliteit...</p>
         </div>
     </div>
 
@@ -139,7 +139,7 @@
                 <button class="btn-action" onclick="addCategorie()">+ Categorie Toevoegen</button>
             </div>
             <div id="categories-container">
-                <!-- Dynamische categorieën komen hier -->
+                <!-- Dynamische categorieën worden hier opgebouwd -->
             </div>
         </div>
     </div>
@@ -167,10 +167,9 @@
     </div>
 
 <script>
-let currentRole = null; // 'admin' (CasaValtrano), 'lid' (Casa), 'gast' (Valtrano)
+let currentRole = null; 
 let categoryCount = 0;
 
-// Default sjabloon tekst
 const defaultTemplate = `━━━━━━━━━━━━━━━━━━\n@everyone\n\n📋 **Nieuwe sollicitatie**\n\nBeste Soldado+,\n\nEr is weer een nieuwe sollicitatie binnengekomen! 🎉\n\n👤 **Sollicitant:**\n<@947983325690224741>\n\n🎂 **Leeftijd:**\n16\n\n🚗 **Interessante voertuigen:**\nOnbekend\n\n🔫 **Interessante wapens:**\nOnbekend\n\n💰 **Interessante waarde:**\n3M aan waarde\n\n📚 **Ervaring:**\n3 jaar Kmar in FRP/TDA. Minimale ervaring hier in de onderwereld\n\n💭 **Motivatie:**\nhet leek me een leuke en gezellige groep waar ik denk best in thuis past met mijn kwaliteiten\n━━━━━━━━━━━━━━━━━━\n💬 **Graag jullie mening en input geven over deze sollicitant.**`;
 
 function switchTab(tabId) {
@@ -200,7 +199,7 @@ function checkAuth() {
 }
 
 function setupPermissions() {
-    // Verberg sollicitaties tab voor 'Valtrano' (gast)
+    // Verberg sollicitaties tab voor 'Valtrano'
     if (currentRole === 'gast') {
         document.getElementById('btn-sollicitaties-menu').style.display = 'none';
     }
@@ -232,7 +231,7 @@ function addCategorie(title = "") {
     const isReadOnly = (currentRole !== 'admin') ? 'disabled' : '';
     
     catDiv.innerHTML = `
-        <input type="text" placeholder="Categorie naam (bijv. Vloeistof)..." value="${title}" ${isReadOnly} style="font-weight:bold; font-size:1.05rem; margin-bottom:10px;">
+        <input type="text" placeholder="Categorie naam..." value="${title}" ${isReadOnly} style="font-weight:bold; font-size:1.05rem; margin-bottom:10px;">
         <div class="items-list"></div>
         ${currentRole === 'admin' ? `<button class="btn-action" style="margin-top:10px; background:#334155;" onclick="addItemToCat('${catDiv.id}')">+ Item toevoegen</button>` : ''}
     `;
@@ -249,7 +248,7 @@ function addItemToCat(catId, name = "", amount = "") {
     const row = document.createElement('div');
     row.className = 'item-row';
     row.innerHTML = `
-        <input type="text" placeholder="Item naam (bijv. Water)..." value="${name}" ${isReadOnly}>
+        <input type="text" placeholder="Item naam..." value="${name}" ${isReadOnly}>
         <input type="number" placeholder="Aantal..." value="${amount}" ${isReadOnly}>
     `;
     itemsList.appendChild(row);
@@ -273,8 +272,8 @@ function postSollicitatie() {
     card.innerHTML = `
         <div>${text}</div>
         <div style="margin-top:15px; display:flex; gap:10px; align-items:center;">
-            <button class="vote-btn" onclick="vote(this, 'yes')">✅ <span class="count">0</span></button>
-            <button class="vote-btn" onclick="vote(this, 'no')">❌ <span class="count">0</span></button>
+            <button class="vote-btn" onclick="vote(this)">✅ <span class="count">0</span></button>
+            <button class="vote-btn" onclick="vote(this)">❌ <span class="count">0</span></button>
         </div>
         <div class="thread-box">
             <strong style="color:var(--text-muted); font-size:0.85rem;">Thread / Meningen:</strong>
@@ -290,7 +289,7 @@ function postSollicitatie() {
     document.getElementById('soll-form').style.display = 'none';
 }
 
-function vote(btn, type) {
+function vote(btn) {
     const countSpan = btn.querySelector('.count');
     countSpan.innerText = parseInt(countSpan.innerText) + 1;
 }
@@ -308,10 +307,8 @@ function addComment(inputEl) {
     inputEl.value = '';
 }
 
-// Standaard velden klaarzetten bij eerste start
 function initDefaultContent() {
     if (document.getElementById('categories-container').children.length === 0) {
-        // Maak 8 standaard categorieën zoals gevraagd
         const counts = [6, 5, 5, 7, 2, 13, 5, 5];
         counts.forEach((itemCount, idx) => {
             addCategorie(`Categorie ${idx + 1}`);
