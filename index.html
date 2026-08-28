@@ -475,10 +475,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // LOAD FROM LOCAL STORAGE
         async function loadData() {
+    try async function loadData() {
     try {
         const response = await fetch(
-            `${SUPABASE_URL}/rest/v1/Gang_data?id=eq.1&select=data`,
+            `${SUPABASE_URL}/rest/v1/Gang_data?id=eq.1&select="Data"`,
             {
+                method: 'GET',
                 headers: {
                     'apikey': SUPABASE_KEY,
                     'Authorization': `Bearer ${SUPABASE_KEY}`
@@ -486,14 +488,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         );
 
+        if (!response.ok) {
+            throw new Error(`Supabase fout: ${response.status}`);
+        }
+
         const result = await response.json();
 
-        if (result.length > 0 && result[0].data) {
+        if (result.length > 0 && result[0].Data) {
             const data = result[0].Data;
 
             for (let id in data) {
-                let inp = document.getElementById(id);
-                if (inp) inp.value = data[id];
+                const inp = document.getElementById(id);
+                if (inp) {
+                    inp.value = data[id];
+                }
             }
         }
 
@@ -503,7 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("Fout bij laden uit Supabase:", error);
         saveAndRecalc();
     }
-}
+    }
 
         // RESET FUNCTIONS
         function clearLoodsEigen() {
