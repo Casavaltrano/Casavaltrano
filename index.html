@@ -24,16 +24,16 @@
             color: var(--text); padding: 15px; min-height: 100vh; 
         }
         
-        .page { display: none; max-width: 900px; margin: 0 auto; animation: fadeIn 0.3s ease; }
+        .page { display: none; max-width: 950px; margin: 0 auto; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
         /* HEADER & LOGO */
         .home-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85vh; text-align: center; }
         .logo-img { 
-            width: 180px; height: 180px; border-radius: 20px; object-fit: cover;
-            border: 2px solid rgba(56, 189, 248, 0.3);
-            box-shadow: 0 0 35px rgba(37, 99, 235, 0.35); margin-bottom: 20px; 
+            width: 190px; height: 190px; border-radius: 24px; object-fit: cover;
+            border: 2px solid rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 35px rgba(37, 99, 235, 0.4); margin-bottom: 20px; 
         }
         .gang-title { font-size: 2.5rem; color: var(--text); font-weight: 900; letter-spacing: 3px; text-transform: uppercase; text-shadow: 0 0 20px rgba(56, 189, 248, 0.2); }
         .gang-subtitle { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 35px; letter-spacing: 2px; text-transform: uppercase; }
@@ -56,7 +56,7 @@
         .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 20px; backdrop-filter: blur(10px); }
         
         input, textarea, button { font-size: 0.9rem; }
-        input[type="text"], input[type="number"], textarea {
+        input[type="text"], input[type="number"], input[type="password"], textarea {
             background: #090d16; border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 8px; width: 100%; outline: none;
         }
         input:focus, textarea:focus { border-color: var(--accent-cyan); }
@@ -67,7 +67,7 @@
         .btn-danger:hover { background: var(--danger); color: white; }
 
         /* GANGBEZIT STYLES */
-        .cat-box { border: 1px solid var(--border); background: rgba(9, 13, 22, 0.8); padding: 18px; border-radius: 12px; margin-bottom: 20px; position: relative; }
+        .cat-box { border: 1px solid var(--border); background: rgba(9, 13, 22, 0.8); padding: 18px; border-radius: 12px; margin-bottom: 20px; }
         .cat-header { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
         .item-row { display: flex; gap: 10px; margin-top: 10px; align-items: center; }
         .item-row input[type="text"] { flex: 3; }
@@ -85,17 +85,24 @@
         
         .thread-box { margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--border); }
         .comment { background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border); padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; font-size: 0.88rem; }
+
+        /* TABELLEN GANPOT & LOODS */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid var(--border); padding: 12px; text-align: left; }
+        th { background: rgba(30, 41, 59, 0.6); color: var(--accent-cyan); font-weight: 700; }
+        tr:nth-child(even) { background: rgba(15, 23, 42, 0.4); }
     </style>
 </head>
 <body>
 
     <!-- INLOG OVERLAY -->
-    <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#05080e; z-index:99999; display:flex; justify-content:center; align-items:center;">
-        <div style="background:#0f172a; padding:35px; border-radius:16px; border:1px solid #1e293b; text-align:center; max-width:380px; width:90%; box-shadow:0 0 40px rgba(0,0,0,0.8);">
-            <h2 style="color:var(--accent-cyan); font-size:24px; font-weight:800; margin-bottom:6px; letter-spacing:1px;">CASA VALTRANO</h2>
-            <p style="color:var(--text-muted); font-size:13px; margin-bottom:25px;">Toegang Beveiligd System</p>
-            <input type="password" id="passInput" placeholder="Wachtwoord..." onkeypress="if(event.key==='Enter') checkAuth()" style="margin-bottom:15px; text-align:center; font-size:1rem;">
-            <button onclick="checkAuth()" class="btn-action" style="width:100%; padding:12px;">Inloggen</button>
+    <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(5, 8, 14, 0.95); backdrop-filter:blur(15px); z-index:99999; display:flex; justify-content:center; align-items:center;">
+        <div style="background:rgba(15, 23, 42, 0.85); padding:40px; border-radius:20px; border:1px solid rgba(56, 189, 248, 0.3); text-align:center; max-width:400px; width:90%; box-shadow:0 0 50px rgba(0,0,0,0.9);">
+            <div style="width:70px; height:70px; margin:0 auto 15px auto; background:rgba(56, 189, 248, 0.1); border:1px solid var(--accent-cyan); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px;">👑</div>
+            <h2 style="color:var(--text); font-size:22px; font-weight:800; margin-bottom:6px; letter-spacing:2px;">CASA VALTRANO</h2>
+            <p style="color:var(--text-muted); font-size:13px; margin-bottom:25px;">Beveiligd Ledenportaal</p>
+            <input type="password" id="passInput" placeholder="Voer wachtwoord in..." onkeypress="if(event.key==='Enter') checkAuth()" style="margin-bottom:15px; text-align:center; font-size:1rem; border-color:rgba(56, 189, 248, 0.2);">
+            <button onclick="checkAuth()" class="btn-action" style="width:100%; padding:12px; background:linear-gradient(135deg, var(--accent-blue), #0284c7);">Inloggen</button>
             <p id="authError" style="color:var(--danger); font-size:13px; display:none; margin-top:12px;">Ongeldig wachtwoord!</p>
         </div>
     </div>
@@ -103,8 +110,7 @@
     <!-- HOME PAGE -->
     <div id="page-home" class="page active">
         <div class="home-container">
-            <!-- AFBEELDING MET LOGO -->
-            <img id="logoImg" class="logo-img" alt="Casa Valtrano Logo">
+            <img id="logoImg" class="logo-img" src="https://i.ibb.co/3pQG81z/Screenshot-20260827-220200-Discord.jpg" alt="Casa Valtrano Logo">
             <h1 class="gang-title">Casa Valtrano</h1>
             <p class="gang-subtitle">HQ & Control Panel</p>
             
@@ -133,8 +139,21 @@
             <div></div>
         </header>
         <div class="card">
-            <h3 style="color: var(--accent-cyan); margin-bottom: 10px;">Inleg Overzicht</h3>
-            <p style="color: var(--text-muted);">Gangpot beheer functionaliteit...</p>
+            <h3 style="color: var(--accent-cyan); margin-bottom: 15px;">Wekelijkse Inleg Status</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Lid</th>
+                        <th>Status</th>
+                        <th>Bedrag</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Valtrano Leader</td><td><span style="color:var(--success);">✅ Betaald</span></td><td>€ 50.000</td></tr>
+                    <tr><td>Member 1</td><td><span style="color:var(--success);">✅ Betaald</span></td><td>€ 50.000</td></tr>
+                    <tr><td>Member 2</td><td><span style="color:var(--danger);">❌ Openstaand</span></td><td>€ 0</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -146,8 +165,21 @@
             <div></div>
         </header>
         <div class="card">
-            <h3 style="color: var(--accent-cyan); margin-bottom: 10px;">Materialen & Voorraad</h3>
-            <p style="color: var(--text-muted);">Loods beheer functionaliteit...</p>
+            <h3 style="color: var(--accent-cyan); margin-bottom: 15px;">Voorraad Overzicht</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Aantal</th>
+                        <th>Locatie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Wapens</td><td>15x</td><td>Kluis A</td></tr>
+                    <tr><td>Ammunitie</td><td>5000x</td><td>Kluis B</td></tr>
+                    <tr><td>Middelen</td><td>120x</td><td>Stash 1</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -189,10 +221,6 @@
 <script>
 let currentRole = null; 
 let categoryCount = 0;
-
-// Base64 afbeelding van de door jou ingestuurde afbeelding
-const LOGO_SRC = "data:image/jpeg;base64,"; // Vul automatisch aan bij laden
-document.getElementById('logoImg').src = document.querySelector('object') ? document.querySelector('object').data : '';
 
 const defaultTemplate = `━━━━━━━━━━━━━━━━━━\n@everyone\n\n📋 **Nieuwe sollicitatie**\n\nBeste Soldado+,\n\nEr is weer een nieuwe sollicitatie binnengekomen! 🎉\n\n👤 **Sollicitant:**\n<@947983325690224741>\n\n🎂 **Leeftijd:**\n16\n\n🚗 **Interessante voertuigen:**\nOnbekend\n\n🔫 **Interessante wapens:**\nOnbekend\n\n💰 **Interessante waarde:**\n3M aan waarde\n\n📚 **Ervaring:**\n3 jaar Kmar in FRP/TDA. Minimale ervaring hier in de onderwereld\n\n💭 **Motivatie:**\nhet leek me een leuke en gezellige groep waar ik denk best in thuis past met mijn kwaliteiten\n━━━━━━━━━━━━━━━━━━\n💬 **Graag jullie mening en input geven over deze sollicitant.**`;
 
@@ -310,7 +338,6 @@ function postSollicitatie() {
     document.getElementById('soll-form').style.display = 'none';
 }
 
-// Slim stemmen (Max 1 stem per persoon)
 function handleVote(btn, type) {
     const parent = btn.parentElement;
     const yesBtn = parent.children[0];
