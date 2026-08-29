@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casa Valtrano - HQ</title>
+    <title>Casa Valtrano - HQ & Control Panel</title>
 
     <style>
         :root {
             --bg-color: #05080e;
-            --card-bg: rgba(15, 23, 42, 0.85);
+            --card-bg: rgba(15, 23, 42, 0.75);
             --border: #1e293b;
             --accent-blue: #2563eb;
             --accent-cyan: #38bdf8;
@@ -28,20 +28,18 @@
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* HEADER & LOGO */
+        /* HOME & LOGO */
         .home-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85vh; text-align: center; }
         .logo-box {
-            width: 170px; height: 170px; border-radius: 24px;
-            background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);
-            border: 2px solid var(--accent-cyan);
-            box-shadow: 0 0 35px rgba(56, 189, 248, 0.3);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            margin-bottom: 20px; color: var(--accent-cyan);
+            width: 190px; height: 190px; border-radius: 24px; overflow: hidden;
+            border: 2px solid rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 35px rgba(37, 99, 235, 0.4); margin-bottom: 20px;
         }
+        .logo-box img { width: 100%; height: 100%; object-fit: cover; }
         .gang-title { font-size: 2.5rem; color: var(--text); font-weight: 900; letter-spacing: 3px; text-transform: uppercase; text-shadow: 0 0 20px rgba(56, 189, 248, 0.2); }
         .gang-subtitle { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 35px; letter-spacing: 2px; text-transform: uppercase; }
         
-        /* BUTTONS & CARDS */
+        /* MENU BUTTONS & CARDS */
         .menu-buttons { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 340px; }
         .main-btn {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
@@ -51,34 +49,29 @@
         }
         .main-btn:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         
-        header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }[cite: 6]
         .back-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-muted); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .back-btn:hover { color: var(--text); border-color: var(--accent-cyan); }
         .header-title { font-size: 1.3rem; color: var(--text); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
         
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 20px; backdrop-filter: blur(10px); }
-        .card-title { font-size: 1.2rem; margin-bottom: 15px; color: var(--accent-gold); border-bottom: 1px solid var(--border); padding-bottom: 8px; font-weight: bold; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 20px; backdrop-filter: blur(10px); }[cite: 6]
+        .card-title { font-size: 1.2rem; margin-bottom: 15px; color: var(--accent-gold); border-bottom: 1px solid var(--border); padding-bottom: 8px; font-weight: bold; }[cite: 6]
 
         input, textarea, button { font-size: 0.9rem; }
         input[type="text"], input[type="number"], input[type="password"], textarea {
-            background: #090d16; border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; width: 100%; outline: none;
-        }
-        input:focus, textarea:focus { border-color: var(--accent-cyan); }
+            background: #090d16; border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 8px; width: 100%; outline: none;
+        }[cite: 6]
+        input:focus, textarea:focus { border-color: var(--accent-cyan); }[cite: 6]
         
         .btn-action { background: var(--accent-blue); color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
         .btn-action:hover { opacity: 0.9; }
         .btn-danger { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: var(--danger); }
         .btn-danger:hover { background: var(--danger); color: white; }
 
-        /* DASHBOARD GRID[cite: 6] */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }
-        .stat-value { font-size: 1.5rem; font-weight: bold; color: var(--accent-cyan); margin-top: 5px; }
-
-        /* TABELLEN */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
-        th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: rgba(255,255,255,0.05); color: var(--text-muted); font-weight: 600; }
+        /* GRID & STATS */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }[cite: 6]
+        .stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 15px; text-align: center; }[cite: 6]
+        .stat-value { font-size: 1.5rem; font-weight: bold; color: var(--accent-cyan); margin-top: 5px; }[cite: 6]
 
         /* GANGBEZIT STYLES */
         .cat-box { border: 1px solid var(--border); background: rgba(9, 13, 22, 0.8); padding: 18px; border-radius: 12px; margin-bottom: 20px; }
@@ -99,12 +92,17 @@
         
         .thread-box { margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--border); }
         .comment { background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border); padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; font-size: 0.88rem; }
+
+        /* TABELLEN */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }[cite: 6]
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); }[cite: 6]
+        th { background: rgba(255,255,255,0.05); color: var(--text-muted); font-weight: 600; }[cite: 6]
     </style>
 </head>
 <body>
 
     <!-- INLOG OVERLAY -->
-    <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(5, 8, 14, 0.96); backdrop-filter:blur(15px); z-index:99999; display:flex; justify-content:center; align-items:center;">
+    <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(5, 8, 14, 0.95); backdrop-filter:blur(15px); z-index:99999; display:flex; justify-content:center; align-items:center;">
         <div style="background:rgba(15, 23, 42, 0.85); padding:40px; border-radius:20px; border:1px solid rgba(56, 189, 248, 0.3); text-align:center; max-width:400px; width:90%; box-shadow:0 0 50px rgba(0,0,0,0.9);">
             <div style="width:70px; height:70px; margin:0 auto 15px auto; background:rgba(56, 189, 248, 0.1); border:1px solid var(--accent-cyan); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px;">👑</div>
             <h2 style="color:var(--text); font-size:22px; font-weight:800; margin-bottom:6px; letter-spacing:2px;">CASA VALTRANO</h2>
@@ -119,9 +117,7 @@
     <div id="page-home" class="page active">
         <div class="home-container">
             <div class="logo-box">
-                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                <div style="font-weight:900; font-size:1.1rem; margin-top:6px; letter-spacing:1px;">CASA</div>
-                <div style="font-size:0.65rem; color:var(--text-muted); letter-spacing:2px;">VALTRANO</div>
+                <img src="data:image/jpeg;base64,<?= base64_encode(file_get_contents('Screenshot_20260827_220200_Discord.jpg')) ?>" onerror="this.src='https://via.placeholder.com/190?text=Casa+Valtrano'" alt="Casa Valtrano Logo">
             </div>
             <h1 class="gang-title">Casa Valtrano</h1>
             <p class="gang-subtitle">HQ & Control Panel</p>
@@ -169,63 +165,66 @@
         </div>
     </div>
 
-    <!-- LOODS PAGE (REKENTOOL)[cite: 6] -->
+    <!-- LOODS PAGE (REKENTOOL INTEGRATIE) -->
     <div id="page-loods" class="page">
         <header>
             <button class="back-btn" onclick="switchTab('page-home')">&larr; Terug</button>
-            <div class="header-title">Loods Beheer & Rekentool</div>
+            <div class="header-title">Loods & Rekentool</div>
             <div></div>
         </header>
-        
+
+        <!-- LIVE STATISTIEKEN -->
         <div class="card">
-            <div class="card-title">Live Loods Statistieken</div>
+            <div class="card-title">Live Loods Statistieken</div>[cite: 6]
             <div class="grid">
                 <div class="stat-box">
-                    <div>Eigen Planten Invoer</div>
-                    <div class="stat-value" id="dash-eigen-invoer">0</div>
+                    <div>Eigen Planten Invoer</div>[cite: 6]
+                    <div class="stat-value" id="dash-eigen-invoer">0</div>[cite: 6]
                 </div>
                 <div class="stat-box">
-                    <div>Eigen Zakjes Uitvoer</div>
-                    <div class="stat-value" id="dash-eigen-uitvoer">0</div>
+                    <div>Eigen Zakjes Uitvoer</div>[cite: 6]
+                    <div class="stat-value" id="dash-eigen-uitvoer">0</div>[cite: 6]
                 </div>
                 <div class="stat-box">
-                    <div>Externe Planten Invoer</div>
-                    <div class="stat-value" id="dash-ext-invoer">0</div>
+                    <div>Externe Planten Invoer</div>[cite: 6]
+                    <div class="stat-value" id="dash-ext-invoer">0</div>[cite: 6]
                 </div>
                 <div class="stat-box">
-                    <div>Winst Leden (Zakjes)</div>
-                    <div class="stat-value" style="color: var(--success);" id="dash-ext-winst">0</div>
+                    <div>Winst Leden (Zakjes)</div>[cite: 6]
+                    <div class="stat-value" style="color: var(--success);" id="dash-ext-winst">0</div>[cite: 6]
                 </div>
             </div>
         </div>
 
+        <!-- EIGEN LEDEN (1:2) -->
         <div class="card">
-            <div class="card-title">Eigen Leden Verwerking (Ratio 1 op 2)</div>
+            <div class="card-title">Eigen Leden Verwerking (Ratio 1 op 2)</div>[cite: 6]
             <table>
                 <thead>
                     <tr>
-                        <th>Naam Lid</th>
-                        <th>Onbewerkte Planten</th>
-                        <th>Uitvoer (Zakjes)</th>
+                        <th>Naam Lid</th>[cite: 6]
+                        <th>Onbewerkte Planten</th>[cite: 6]
+                        <th>Uitvoer (Zakjes)</th>[cite: 6]
                     </tr>
                 </thead>
-                <tbody id="tbl-eigen"></tbody>
+                <tbody id="tbl-eigen"></tbody>[cite: 6]
             </table>
         </div>
 
+        <!-- EXTERNE SWAPS (1:5) -->
         <div class="card">
-            <div class="card-title">Externe Swaps Verwerking (Ratio 1 op 5 & Lid Winst)</div>
+            <div class="card-title">Externe Swaps Verwerking (Ratio 1 op 5 & Lid Winst)</div>[cite: 6]
             <table>
                 <thead>
                     <tr>
-                        <th>Klant Naam</th>
-                        <th>Afgehandeld Door</th>
-                        <th>Onbewerkte Planten</th>
-                        <th>Klant Zakjes (1/5)</th>
-                        <th>Winst Lid (Zakjes)</th>
+                        <th>Klant Naam</th>[cite: 6]
+                        <th>Afgehandeld Door</th>[cite: 6]
+                        <th>Onbewerkte Planten</th>[cite: 6]
+                        <th>Klant Zakjes (1/5)</th>[cite: 6]
+                        <th>Winst Lid (Zakjes)</th>[cite: 6]
                     </tr>
                 </thead>
-                <tbody id="tbl-ext"></tbody>
+                <tbody id="tbl-ext"></tbody>[cite: 6]
             </table>
         </div>
     </div>
@@ -289,7 +288,6 @@ function checkAuth() {
     document.getElementById('loginOverlay').style.display = 'none';
     setupPermissions();
     initDefaultContent();
-    initLoodsTables();
 }
 
 function setupPermissions() {
@@ -308,36 +306,32 @@ function applyReadOnlyState() {
     document.querySelectorAll('#page-gangbezit input').forEach(el => el.disabled = isReadOnly);
 }
 
-// LOODS REKENTOOL LOGICA[cite: 6]
-function initLoodsTables() {
-    const tblEigen = document.getElementById('tbl-eigen');
-    tblEigen.innerHTML = '';
-    for(let i=1; i<=10; i++) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td><input type="text" value="Lid ${i}"></td>
-            <td><input type="number" class="eigen-invoer" oninput="recalcLoods()" placeholder="0"></td>
-            <td class="eigen-uitvoer" style="font-weight:bold; color:var(--accent-cyan);">0</td>
-        `;
-        tblEigen.appendChild(tr);
-    }
+/* REKENTOOL INSTELLINGEN (LOODS) */
+const tblEigen = document.getElementById('tbl-eigen');
+for(let i=1; i<=15; i++) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" value="Lid ${i}"></td>
+        <td><input type="number" class="eigen-invoer" oninput="recalc()" placeholder="0"></td>
+        <td class="eigen-uitvoer font-bold" style="font-weight:bold; color:var(--accent-cyan)">0</td>
+    `;
+    tblEigen.appendChild(tr);
+}[cite: 6]
 
-    const tblExt = document.getElementById('tbl-ext');
-    tblExt.innerHTML = '';
-    for(let i=1; i<=10; i++) {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td><input type="text" placeholder="Klant ${i}"></td>
-            <td><input type="text" value="Lid ${i}"></td>
-            <td><input type="number" class="ext-invoer" oninput="recalcLoods()" placeholder="0"></td>
-            <td class="ext-klant">0</td>
-            <td class="ext-winst" style="font-weight:bold; color: var(--success);">0</td>
-        `;
-        tblExt.appendChild(tr);
-    }
-}
+const tblExt = document.getElementById('tbl-ext');
+for(let i=1; i<=15; i++) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" placeholder="Klant ${i}"></td>
+        <td><input type="text" value="Lid ${i}"></td>
+        <td><input type="number" class="ext-invoer" oninput="recalc()" placeholder="0"></td>
+        <td class="ext-klant">0</td>
+        <td class="ext-winst font-bold" style="color: var(--success); font-weight:bold;">0</td>
+    `;
+    tblExt.appendChild(tr);
+}[cite: 6]
 
-function recalcLoods() {
+function recalc() {
     let totEigenInvoer = 0;
     let totEigenUitvoer = 0;
 
@@ -369,9 +363,9 @@ function recalcLoods() {
     document.getElementById('dash-eigen-uitvoer').innerText = totEigenUitvoer.toLocaleString();
     document.getElementById('dash-ext-invoer').innerText = totExtInvoer.toLocaleString();
     document.getElementById('dash-ext-winst').innerText = totExtWinst.toLocaleString();
-}
+}[cite: 6]
 
-// GANGBEZIT LOGICA
+/* GANGBEZIT LOGICA */
 function addCategorie(title = "") {
     categoryCount++;
     const container = document.getElementById('categories-container');
@@ -413,7 +407,7 @@ function addItemToCat(catId, name = "", amount = "") {
     itemsList.appendChild(row);
 }
 
-// SOLLICITATIES LOGICA
+/* SOLLICITATIES LOGICA */
 function toggleSollForm() {
     const form = document.getElementById('soll-form');
     form.style.display = form.style.display === 'none' ? 'block' : 'none';
