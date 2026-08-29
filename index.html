@@ -7,11 +7,11 @@
   <style>  
     :root {  
       --bg-color: #05080e;  
-      --card-bg: rgba(15, 23, 42, 0.75);  
-      --border: #1e293b;  
+      --card-bg: rgba(15, 23, 42, 0.65);  
+      --border: rgba(56, 189, 248, 0.15);  
       --accent-blue: #2563eb;  
       --accent-cyan: #38bdf8;  
-      --accent-gold: #d97706;  
+      --accent-gold: #f59e0b;  
       --text: #f8fafc;  
       --text-muted: #94a3b8;  
       --danger: #ef4444;  
@@ -23,96 +23,90 @@
     body {  
       background: radial-gradient(circle at top, #0f172a 0%, #05080e 100%);  
       color: var(--text);  
-      padding: 15px;  
+      padding: 20px;  
       min-height: 100vh;  
     }  
   
-    .page { display: none; max-width: 950px; margin: 0 auto; animation: fadeIn 0.3s ease; }  
+    .page { display: none; max-width: 950px; margin: 0 auto; animation: fadeIn 0.4s ease-out; }  
     .page.active { display: block; }  
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }  
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }  
   
     /* HEADER & LOGO */  
     .home-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85vh; text-align: center; }  
       
     .logo-box {  
-      width: 160px;  
-      height: 160px;  
-      border-radius: 20px;  
-      border: 2px solid rgba(56, 189, 248, 0.3);  
-      box-shadow: 0 0 35px rgba(37, 99, 235, 0.35);  
-      margin-bottom: 20px;  
+      width: 170px;  
+      height: 170px;  
+      border-radius: 28px;  
+      border: 1px solid rgba(56, 189, 248, 0.25);  
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.15);  
+      margin-bottom: 25px;  
       overflow: hidden;  
       background: #0f172a;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
+      transition: transform 0.3s ease, box-shadow 0.3s ease;  
     }  
+    .logo-box:hover { transform: translateY(-3px); box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 40px rgba(56, 189, 248, 0.25); }  
     .logo-img { width: 100%; height: 100%; object-fit: cover; border: none; }  
   
-    .gang-title { font-size: 2.5rem; color: var(--text); font-weight: 900; letter-spacing: 3px; text-transform: uppercase; text-shadow: 0 0 20px rgba(56, 189, 248, 0.2); }  
-    .gang-subtitle { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 35px; letter-spacing: 2px; text-transform: uppercase; }  
+    .gang-title { font-size: 2.6rem; color: var(--text); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); }  
+    .gang-subtitle { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 35px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.85; }  
   
     /* BUTTONS & CARDS */  
-    .menu-buttons { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 340px; }  
+    .menu-buttons { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 360px; }  
     .main-btn {  
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);  
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.75) 100%);  
       border: 1px solid var(--border);  
       color: var(--text);  
-      padding: 16px 22px;  
-      border-radius: 12px;  
+      padding: 18px 24px;  
+      border-radius: 16px;  
       font-size: 1.05rem;  
-      font-weight: 700;  
+      font-weight: 600;  
       cursor: pointer;  
-      transition: all 0.25s ease;  
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);  
       display: flex;  
       align-items: center;  
       justify-content: space-between;  
-      backdrop-filter: blur(10px);  
+      backdrop-filter: blur(12px);  
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);  
     }  
-    .main-btn:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }  
+    .main-btn:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(56, 189, 248, 0.2); }  
   
-    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }  
-    .back-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-muted); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; }  
-    .back-btn:hover { color: var(--text); border-color: var(--accent-cyan); }  
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 18px; }  
+    .back-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-muted); padding: 10px 18px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; backdrop-filter: blur(10px); }  
+    .back-btn:hover { color: var(--text); border-color: var(--accent-cyan); transform: translateX(-2px); }  
     .header-title { font-size: 1.3rem; color: var(--text); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }  
   
-    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 20px; backdrop-filter: blur(10px); }  
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 25px; margin-bottom: 20px; backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }  
   
-    input, textarea, button { font-size: 0.9rem; }  
+    input, textarea, button { font-size: 0.95rem; }  
     input[type="text"], input[type="number"], textarea {  
-      background: #090d16;  
+      background: rgba(9, 13, 22, 0.7);  
       border: 1px solid var(--border);  
       color: var(--text);  
-      padding: 10px;  
-      border-radius: 8px;  
+      padding: 12px 14px;  
+      border-radius: 12px;  
       width: 100%;  
       outline: none;  
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;  
     }  
-    input:focus, textarea:focus { border-color: var(--accent-cyan); }  
+    input:focus, textarea:focus { border-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }  
   
-    .btn-action { background: var(--accent-blue); color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }  
-    .btn-action:hover { opacity: 0.9; }  
-    .btn-danger { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: var(--danger); }  
-    .btn-danger:hover { background: var(--danger); color: white; }  
+    .btn-action { background: linear-gradient(135deg, var(--accent-blue), #1d4ed8); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }  
+    .btn-action:hover { opacity: 0.95; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4); }  
+    .btn-danger { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: var(--danger); box-shadow: none; }  
+    .btn-danger:hover { background: var(--danger); color: white; border-color: var(--danger); }  
   
     /* GROEPSPOT STYLES */  
-    .pot-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; background: rgba(9, 13, 22, 0.6); padding: 10px; border-radius: 8px; border: 1px solid var(--border); }  
+    .pot-row { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; background: rgba(9, 13, 22, 0.5); padding: 12px; border-radius: 14px; border: 1px solid var(--border); transition: border-color 0.2s ease; }  
+    .pot-row:hover { border-color: rgba(56, 189, 248, 0.3); }  
     .pot-row input[type="text"] { flex: 2; }  
     .pot-row input[type="number"] { flex: 1.5; }  
-    .status-badge { flex: 2; font-weight: bold; font-size: 0.88rem; padding: 6px 10px; border-radius: 6px; display: flex; align-items: center; gap: 6px; }  
-    .status-ok { background: rgba(34, 197, 94, 0.15); color: var(--success); border: 1px solid var(--success); }  
-    .status-nok { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid var(--danger); }  
-  
-    /* SWAM RATIO STYLES */  
-    .swam-card { border: 1px solid var(--border); background: rgba(9, 13, 22, 0.8); padding: 15px; border-radius: 10px; margin-bottom: 15px; }  
-    .swam-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }  
-  
-    /* GANGBEZIT STYLES */  
-    .cat-box { border: 1px solid var(--border); background: rgba(9, 13, 22, 0.8); padding: 18px; border-radius: 12px; margin-bottom: 20px; }  
-    .cat-header { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }  
-    .item-row { display: flex; gap: 10px; margin-top: 10px; align-items: center; }  
-    .item-row input[type="text"] { flex: 3; }  
-    .item-row input[type="number"] { flex: 1; }  
+    .status-badge { flex: 2; font-weight: 600; font-size: 0.9rem; padding: 10px 14px; border-radius: 10px; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(5px); }  
+    .status-ok { background: rgba(34, 197, 94, 0.12); color: var(--success); border: 1px solid rgba(34, 197, 94, 0.3); }  
+    .status-nok { background: rgba(239, 68, 68, 0.12); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }  
   </style>  
 </head>  
 <body>  
@@ -129,25 +123,24 @@
         
       <div class="menu-buttons">  
         <button class="main-btn" onclick="switchTab('page-gangpot')"><span>Groepspot</span><span>→</span></button>  
-        <button class="main-btn" onclick="switchTab('page-swammen')"><span>Swammen / Ratio's</span><span>→</span></button>  
         <button class="main-btn" onclick="switchTab('page-loods')"><span>Loods Beheer</span><span>→</span></button>  
         <button class="main-btn" onclick="switchTab('page-gangbezit')"><span>Gangbezit</span><span>→</span></button>  
-        <button id="adminLoginBtn" class="main-btn" style="border-color: var(--accent-gold); color: var(--accent-gold); margin-top: 15px;" onclick="showLoginModal()"><span>Inloggen CasaValtrano</span><span>🔒</span></button>  
+        <button id="adminLoginBtn" class="main-btn" style="border-color: rgba(245, 158, 11, 0.4); color: var(--accent-gold); margin-top: 15px;" onclick="showLoginModal()"><span>Inloggen CasaValtrano</span><span>🔒</span></button>  
       </div>  
     </div>  
   </div>  
   
   <!-- INLOG MODAL -->  
-  <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(5, 8, 14, 0.9); z-index:99999; display:none; justify-content:center; align-items:center;">  
-    <div style="background:#0f172a; padding:35px; border-radius:16px; border:1px solid #1e293b; text-align:center; max-width:380px; width:90%; box-shadow:0 0 40px rgba(0,0,0,0.8);">  
+  <div id="loginOverlay" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(5, 8, 14, 0.85); z-index:99999; display:none; justify-content:center; align-items:center; backdrop-filter:blur(8px);">  
+    <div style="background:#0f172a; padding:35px; border-radius:24px; border:1px solid rgba(56, 189, 248, 0.2); text-align:center; max-width:380px; width:90%; box-shadow:0 20px 50px rgba(0,0,0,0.8);">  
       <h2 style="color:var(--accent-cyan); font-size:24px; font-weight:800; margin-bottom:6px; letter-spacing:1px;">CASA VALTRANO</h2>  
       <p style="color:var(--text-muted); font-size:13px; margin-bottom:25px;">Admin Toegang</p>  
-      <input type="password" id="passInput" placeholder="Wachtwoord..." onkeypress="if(event.key==='Enter') checkAuth()" style="margin-bottom:15px; text-align:center; font-size:1rem;">  
+      <input type="password" id="passInput" placeholder="Wachtwoord..." onkeypress="if(event.key==='Enter') checkAuth()" style="margin-bottom:18px; text-align:center;">  
       <div style="display:flex; gap:10px;">  
-        <button onclick="checkAuth()" class="btn-action" style="flex:1; padding:12px;">Inloggen</button>  
-        <button onclick="hideLoginModal()" class="btn-action btn-danger" style="flex:1; padding:12px;">Annuleren</button>  
+        <button onclick="checkAuth()" class="btn-action" style="flex:1;">Inloggen</button>  
+        <button onclick="hideLoginModal()" class="btn-action btn-danger" style="flex:1;">Annuleren</button>  
       </div>  
-      <p id="authError" style="color:var(--danger); font-size:13px; display:none; margin-top:12px;">Ongeldig wachtwoord!</p>  
+      <p id="authError" style="color:var(--danger); font-size:13px; display:none; margin-top:14px;">Ongeldig wachtwoord!</p>  
     </div>  
   </div>  
   
@@ -159,32 +152,12 @@
       <div></div>  
     </header>  
     <div class="card">  
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">  
-        <h3 style="color: var(--accent-cyan);">Leden Inleg Status (Target: $50.000)</h3>  
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px;">  
+        <h3 style="color: var(--accent-cyan); font-size: 1.15rem;">Leden Inleg Status (Target: $50.000)</h3>  
         <button id="adminAddPotBtn" class="btn-action" style="display:none;" onclick="addPotRow()">+ Lid Toevoegen</button>  
       </div>  
       <div id="pot-rows-container">  
         <!-- Rijen worden dynamisch ingeladen -->  
-      </div>  
-    </div>  
-  </div>  
-  
-  <!-- SWAMMEN / RATIO PAGE -->  
-  <div id="page-swammen" class="page">  
-    <header>  
-      <button class="back-btn" onclick="switchTab('page-home')">← Terug</button>  
-      <div class="header-title">Swammen Ratio Beheer</div>  
-      <div></div>  
-    </header>  
-    <div class="card">  
-      <h3 style="color: var(--accent-cyan); margin-bottom: 15px;">Aanpasbare Swam Ratio's</h3>  
-      <div id="admin-swam-controls" style="margin-bottom:20px; display:none; gap:10px;">  
-        <input type="text" id="newSwamName" placeholder="Naam (bijv. Ratio A)" style="flex:1;">  
-        <input type="text" id="newSwamValue" placeholder="Ratio (bijv. 1/2)" style="flex:1;">  
-        <button class="btn-action" onclick="addSwamRatio()">+ Ratio Toevoegen</button>  
-      </div>  
-      <div id="swam-container" class="swam-card">  
-        <!-- Swam ratio's worden hier geladen -->  
       </div>  
     </div>  
   </div>  
@@ -197,7 +170,7 @@
       <div></div>  
     </header>  
     <div class="card">  
-      <h3 style="color: var(--accent-cyan); margin-bottom: 10px;">Materialen & Voorraad</h3>  
+      <h3 style="color: var(--accent-cyan); margin-bottom: 12px;">Materialen & Voorraad</h3>  
       <p style="color: var(--text-muted);">Loods inventarisbeheer overzicht...</p>  
     </div>  
   </div>  
@@ -219,12 +192,6 @@
   
   <script>  
     let currentRole = null;  
-  
-    // --- SWAM RATIO'S ---  
-    let swamRatios = [  
-      { id: 1, name: "Standaard Ratio 1", ratio: "1/2" },  
-      { id: 2, name: "Standaard Ratio 2", ratio: "1/5" }  
-    ];  
   
     // --- GROEPSPOT DATA ---  
     let potData = [  
@@ -255,9 +222,7 @@
         document.getElementById('adminLoginBtn').style.display = 'none';  
         document.getElementById('adminAddPotBtn').style.display = 'block';  
         document.getElementById('admin-cat-controls').style.display = 'block';  
-        document.getElementById('admin-swam-controls').style.display = 'flex';  
         renderPot();  
-        renderSwamRatios();  
       } else {  
         document.getElementById('authError').style.display = 'block';  
       }  
@@ -313,56 +278,8 @@
       renderPot();  
     }  
   
-    /* SWAM RATIO LOGICA */  
-    function renderSwamRatios() {  
-      const container = document.getElementById('swam-container');  
-      container.innerHTML = '';  
-  
-      if (swamRatios.length === 0) {  
-        container.innerHTML = '<p style="color:var(--text-muted);">Geen ratio\'s ingesteld.</p>';  
-        return;  
-      }  
-  
-      swamRatios.forEach((item, index) => {  
-        const row = document.createElement('div');  
-        row.className = 'swam-row';  
-        row.innerHTML = `  
-          <div>  
-            <strong>${item.name}</strong>  
-            <span style="color:var(--accent-cyan); font-weight:bold; margin-left:15px; font-size:1.1rem;">${item.ratio}</span>  
-          </div>  
-          ${currentRole === 'admin' ? `<button class="btn-action btn-danger" onclick="removeSwamRatio(${index})">Verwijderen</button>` : ''}  
-        `;  
-        container.appendChild(row);  
-      });  
-    }  
-  
-    function addSwamRatio() {  
-      if (currentRole !== 'admin') return;  
-      const nameInput = document.getElementById('newSwamName');  
-      const ratioInput = document.getElementById('newSwamValue');  
-      if (!nameInput.value || !ratioInput.value) return;  
-  
-      swamRatios.push({  
-        id: Date.now(),  
-        name: nameInput.value,  
-        ratio: ratioInput.value  
-      });  
-  
-      nameInput.value = '';  
-      ratioInput.value = '';  
-      renderSwamRatios();  
-    }  
-  
-    function removeSwamRatio(index) {  
-      if (currentRole !== 'admin') return;  
-      swamRatios.splice(index, 1);  
-      renderSwamRatios();  
-    }  
-  
-    // Initiele renders bij opstarten  
+    // Initiele render  
     renderPot();  
-    renderSwamRatios();  
   </script>  
 </body>  
 </html>
