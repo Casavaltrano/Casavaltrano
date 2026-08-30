@@ -108,7 +108,7 @@
     .status-ok { background: rgba(34, 197, 94, 0.12); color: var(--success); border: 1px solid rgba(34, 197, 94, 0.3); }  
     .status-nok { background: rgba(239, 68, 68, 0.12); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }  
 
-    /* VERBETERDE LOGIN MODAL STYLES */
+    /* LOGIN MODAL STYLES */
     .login-card {
       background: linear-gradient(165deg, rgba(15, 23, 42, 0.95) 0%, rgba(5, 8, 14, 0.98) 100%);
       padding: 35px 30px;
@@ -170,6 +170,31 @@
       transition: color 0.2s ease;
     }
     .toggle-eye:hover { color: var(--accent-cyan); }
+
+    /* GANGBEZIT CATEGORIE STYLES */
+    .cat-block {
+      background: rgba(9, 13, 22, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .cat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .cat-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+    .cat-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
   </style>  
 </head>  
 <body>  
@@ -270,6 +295,11 @@
       { name: "Lid 1", amount: 50000 },  
       { name: "Lid 2", amount: 25000 }  
     ];  
+
+    // --- GANGBEZIT DATA ---
+    let categoriesData = [
+      { name: "Voertuigen", items: ["Schafter V12", "Sultan RS"] }
+    ];
   
     function switchTab(tabId) {  
       document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));  
@@ -302,12 +332,23 @@
         document.getElementById('adminAddPotBtn').style.display = 'block';  
         document.getElementById('admin-cat-controls').style.display = 'block';  
         renderPot();  
+        renderCategories();
       } else {  
         document.getElementById('authError').style.display = 'block';  
       }  
     }  
-  
+
     /* GROEPSPOT LOGICA */  
+    function getStatusHtml(amount) {
+      const target = 50000;  
+      const remaining = target - amount;  
+      if (amount >= target) {  
+        return `<div class="status-badge status-ok"><span>✅</span> <span>Voldoen ($${amount.toLocaleString()})</span></div>`;  
+      } else {  
+        return `<div class="status-badge status-nok"><span>❌</span> <span>Nog $${remaining.toLocaleString()} te gaan</span></div>`;  
+      }
+    }
+
     function renderPot() {  
       const container = document.getElementById('pot-rows-container');  
       container.innerHTML = '';  
@@ -315,35 +356,30 @@
       potData.forEach((item, index) => {  
         const row = document.createElement('div');  
         row.className = 'pot-row';  
-          
-        const target = 50000;  
-        const remaining = target - item.amount;  
-          
-        let statusHtml = '';  
-        if (item.amount >= target) {  
-          statusHtml = `<div class="status-badge status-ok"><span>✅</span> <span>Voldoen ($${item.amount.toLocaleString()})</span></div>`;  
-        } else {  
-          statusHtml = `<div class="status-badge status-nok"><span>❌</span> <span>Nog $${remaining.toLocaleString()} te gaan</span></div>`;  
-        }  
-  
+        row.id = `pot-row-${index}`;
+        
         row.innerHTML = `  
-          <input type="text" value="${item.name}" placeholder="Naam lid..." onchange="updatePot(${index}, 'name', this.value)">  
-          <input type="number" value="${item.amount}" placeholder="Bedrag in $" oninput="updatePot(${index}, 'amount', this.value)">  
-          ${statusHtml}  
+          <input type="text" value="${item.name}" placeholder="Naam lid..." oninput="updatePotName(${index}, this.value)">  
+          <input type="number" value="${item.amount}" placeholder="Bedrag in $" oninput="updatePotAmount(${index}, this.value)">  
+          <div id="status-container-${index}">${getStatusHtml(item.amount)}</div>
           ${currentRole === 'admin' ? `<button class="btn-action btn-danger" onclick="removePotRow(${index})">✕</button>` : ''}  
         `;  
         container.appendChild(row);  
       });  
     }  
   
-    function updatePot(index, field, value) {  
-      if (field === 'amount') {  
-        potData[index].amount = parseFloat(value) || 0;  
-      } else {  
-        potData[index].name = value;  
-      }  
-      renderPot();  
+    function updatePotName(index, value) {  
+      potData[index].name = value;  
     }  
+
+    function updatePotAmount(index, value) {
+      const amount = parseFloat(value) || 0;
+      potData[index].amount = amount;
+      const statusContainer = document.getElementById(`status-container-${index}`);
+      if (statusContainer) {
+        statusContainer.innerHTML = getStatusHtml(amount);
+      }
+    }
   
     function addPotRow() {  
       if (currentRole !== 'admin') return;  
@@ -356,9 +392,69 @@
       potData.splice(index, 1);  
       renderPot();  
     }  
+
+    /* GANGBEZIT LOGICA */
+    function renderCategories() {
+      const container = document.getElementById('categories-container');
+      container.innerHTML = '';
+
+      categoriesData.forEach((cat, catIdx) => {
+        const block = document.createElement('div');
+        block.className = 'cat-block';
+
+        let itemsHtml = '';
+        cat.items.forEach((item, itemIdx) => {
+          itemsHtml += `
+            <div class="cat-item">
+              <input type="text" value="${item}" oninput="updateCatItem(${catIdx}, ${itemIdx}, this.value)">
+              ${currentRole === 'admin' ? `<button class="btn-action btn-danger" onclick="removeCatItem(${catIdx}, ${itemIdx})">✕</button>` : ''}
+            </div>
+          `;
+        });
+
+        block.innerHTML = `
+          <div class="cat-header">
+            <input type="text" class="cat-title" value="${cat.name}" oninput="updateCatName(${catIdx}, this.value)" style="width: 70%; font-weight: bold; background: transparent; border: none; font-size: 1.1rem; color: var(--accent-cyan);">
+            ${currentRole === 'admin' ? `<button class="btn-action btn-danger" onclick="removeCategorie(${catIdx})">Verwijder Categorie</button>` : ''}
+          </div>
+          <div>${itemsHtml}</div>
+          ${currentRole === 'admin' ? `<button class="btn-action" style="margin-top:10px; padding: 6px 14px; font-size: 0.85rem;" onclick="addCatItem(${catIdx})">+ Item Toevoegen</button>` : ''}
+        `;
+        container.appendChild(block);
+      });
+    }
+
+    function addCategorie() {
+      categoriesData.push({ name: "Nieuwe Categorie", items: [""] });
+      renderCategories();
+    }
+
+    function removeCategorie(catIdx) {
+      categoriesData.splice(catIdx, 1);
+      renderCategories();
+    }
+
+    function updateCatName(catIdx, val) {
+      categoriesData[catIdx].name = val;
+    }
+
+    function addCatItem(catIdx) {
+      categoriesData[catIdx].items.push("");
+      renderCategories();
+    }
+
+    function updateCatItem(catIdx, itemIdx, val) {
+      categoriesData[catIdx].items[itemIdx] = val;
+    }
+
+    function removeCatItem(catIdx, itemIdx) {
+      categoriesData[catIdx].items.splice(itemIdx, 1);
+      renderCategories();
+    }
   
     // Initiele render  
     renderPot();  
+    renderCategories();
   </script>  
 </body>  
 </html>
