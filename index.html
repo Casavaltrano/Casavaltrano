@@ -81,8 +81,8 @@
   
     .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 25px; margin-bottom: 20px; backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }  
   
-    input, textarea, button { font-size: 0.95rem; }  
-    input[type="text"], input[type="number"], input[type="password"] {  
+    input, textarea, select, button { font-size: 0.95rem; }  
+    input[type="text"], input[type="number"], input[type="password"], select {  
       background: rgba(9, 13, 22, 0.7);  
       border: 1px solid var(--border);  
       color: var(--text);  
@@ -92,8 +92,9 @@
       outline: none;  
       transition: border-color 0.2s ease, box-shadow 0.2s ease;  
     }  
-    input:focus, textarea:focus { border-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }  
-  
+    input:focus, textarea:focus, select:focus { border-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }  
+    input[readonly] { background: rgba(15, 23, 42, 0.4); border-color: rgba(255, 255, 255, 0.05); color: var(--accent-cyan); cursor: not-allowed; }
+
     .btn-action { background: linear-gradient(135deg, var(--accent-blue), #1d4ed8); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }  
     .btn-action:hover { opacity: 0.95; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4); }  
     .btn-danger { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: var(--danger); box-shadow: none; }  
@@ -206,17 +207,31 @@
       border-radius: 14px;
       text-align: center;
     }
-    .stat-value {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--accent-cyan);
-      margin-top: 6px;
-    }
     .stat-label {
       font-size: 0.85rem;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+    }
+
+    /* SWAP ROW STYLES */
+    .swap-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+    .swap-row input { text-align: center; }
+    .swap-row input[type="text"] { text-align: left; }
+    .swap-header {
+      display: flex;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      padding: 0 4px;
     }
   </style>  
 </head>  
@@ -276,9 +291,7 @@
         <h3 style="color: var(--accent-cyan); font-size: 1.15rem;">Leden Inleg Status (Target: $50.000)</h3>  
         <button id="adminAddPotBtn" class="btn-action" style="display:none;" onclick="addPotRow()">+ Lid Toevoegen</button>  
       </div>  
-      <div id="pot-rows-container">  
-        <!-- Rijen worden dynamisch ingeladen -->  
-      </div>  
+      <div id="pot-rows-container"></div>  
     </div>  
   </div>  
   
@@ -290,21 +303,21 @@
       <div></div>  
     </header>  
     <div class="card">  
-      <h3 style="color: var(--accent-cyan); margin-bottom: 18px;">Algemeen Info Overzicht</h3>  
+      <h3 style="color: var(--accent-cyan); margin-bottom: 18px;">Algemeen Info Overzicht (Gekoppeld)</h3>  
       
-      <!-- INFO STATS GRID -->
+      <!-- AUTOMATISCH BEREKENDE LOODS STATS -->
       <div class="loods-grid">
         <div class="stat-card">
-          <div class="stat-label">Aantal Planten</div>
-          <input type="number" id="loodsPlanten" value="0" style="margin-top:8px; text-align:center; font-weight:bold; font-size:1.2rem;" oninput="updateLoodsInfo()">
+          <div class="stat-label">Aantal Planten (Ingebracht)</div>
+          <input type="number" id="loodsPlanten" value="0" style="margin-top:8px; text-align:center; font-weight:bold; font-size:1.2rem;" readonly>
         </div>
         <div class="stat-card">
-          <div class="stat-label">Aantal Zakjes</div>
-          <input type="number" id="loodsZakjes" value="0" style="margin-top:8px; text-align:center; font-weight:bold; font-size:1.2rem;" oninput="updateLoodsInfo()">
+          <div class="stat-label">Aantal Eigen Zakjes</div>
+          <input type="number" id="loodsZakjes" value="0" style="margin-top:8px; text-align:center; font-weight:bold; font-size:1.2rem;" readonly>
         </div>
         <div class="stat-card">
-          <div class="stat-label">Personen Ingebracht</div>
-          <input type="number" id="loodsPersonen" value="0" style="margin-top:8px; text-align:center; font-weight:bold; font-size:1.2rem;" oninput="updateLoodsInfo()">
+          <div class="stat-label">Actieve Personen</div>
+          <input type="number" id="loodsPersonen" value="0" style="margin-top:8px; text-align:center; font-weight:bold; font-size:1.2rem;" readonly>
         </div>
       </div>
 
@@ -329,7 +342,14 @@
     </header>
     <div class="card">
       <h3 style="color: var(--accent-cyan); margin-bottom: 12px;">Eigen Gebruik Registratie</h3>
-      <p style="color: var(--text-muted);">Overzicht van items en voorraden voor eigen gebruik...</p>
+      <div class="swap-header">
+        <div style="flex:2;">Naam Lid</div>
+        <div style="flex:1.5;">Eigen Planten</div>
+        <div style="flex:1.5;">Eigen Zakjes</div>
+        <div style="width:40px;"></div>
+      </div>
+      <div id="eigen-gebruik-container"></div>
+      <button class="btn-action" style="margin-top:10px;" onclick="addEigenGebruikRow()">+ Lid Toevoegen</button>
     </div>
   </div>
 
@@ -341,8 +361,55 @@
       <div></div>
     </header>
     <div class="card">
-      <h3 style="color: var(--accent-cyan); margin-bottom: 12px;">Swap Beheer</h3>
-      <p style="color: var(--text-muted);">Overzicht van te swappen items en ruiltransacties...</p>
+      <h3 style="color: var(--accent-cyan); margin-bottom: 16px;">Swap Beheer & Ratios</h3>
+      
+      <!-- RATIO INSTELLINGEN -->
+      <div style="display:flex; gap:16px; margin-bottom:20px; background:rgba(9, 13, 22, 0.4); padding:14px; border-radius:12px; border:1px solid var(--border);">
+        <div style="flex:1;">
+          <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:4px;">Loodsratio (Planten per 1 zakje)</label>
+          <select id="loodsRatioSelect" onchange="updateSwapRatios()">
+            <option value="1">1 / 1</option>
+            <option value="2">1 / 2</option>
+            <option value="3">1 / 3</option>
+            <option value="4" selected>1 / 4</option>
+            <option value="5">1 / 5</option>
+            <option value="6">1 / 6</option>
+            <option value="7">1 / 7</option>
+            <option value="8">1 / 8</option>
+            <option value="9">1 / 9</option>
+            <option value="10">1 / 10</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:4px;">Swapratio (Zakje naar ander per X planten)</label>
+          <select id="swapRatioSelect" onchange="updateSwapRatios()">
+            <option value="1">1 / 1</option>
+            <option value="2">1 / 2</option>
+            <option value="3">1 / 3</option>
+            <option value="4">1 / 4</option>
+            <option value="5" selected>1 / 5</option>
+            <option value="6">1 / 6</option>
+            <option value="7">1 / 7</option>
+            <option value="8">1 / 8</option>
+            <option value="9">1 / 9</option>
+            <option value="10">1 / 10</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- SWAP TABEL HEADER -->
+      <div class="swap-header">
+        <div style="flex:2;">Naam</div>
+        <div style="flex:1.2;">Planten</div>
+        <div style="flex:1.2;">Ander Zakjes</div>
+        <div style="flex:1.2;">Eigen Zakjes</div>
+        <div style="width:40px;"></div>
+      </div>
+
+      <!-- SWAP CONTAINER -->
+      <div id="swap-rows-container"></div>
+      
+      <button class="btn-action" style="margin-top:12px;" onclick="addSwapRow()">+ Persoon Toevoegen</button>
     </div>
   </div>
   
@@ -363,19 +430,26 @@
   
   <script>  
     let currentRole = null;  
-  
+
+    // Ratios
+    let loodsRatio = 4; // 1 zakje per 4 planten
+    let swapRatio = 5;  // 1 zakje naar ander per 5 planten
+
+    // Data voor Swappen
+    let swapData = [
+      { name: "Persoon 1", planten: 20 }
+    ];
+
+    // Data voor Eigen Gebruik
+    let eigenGebruikData = [
+      { name: "Lid 1", planten: 10, zakjes: 2 }
+    ];
+
     // --- GROEPSPOT DATA ---  
     let potData = [  
       { name: "Lid 1", amount: 50000 },  
       { name: "Lid 2", amount: 25000 }  
     ];  
-
-    // --- LOODS DATA ---
-    let loodsData = {
-      planten: 120,
-      zakjes: 450,
-      personen: 5
-    };
 
     // --- GANGBEZIT DATA ---
     let categoriesData = [
@@ -414,22 +488,127 @@
         document.getElementById('admin-cat-controls').style.display = 'block';  
         renderPot();  
         renderCategories();
+        renderSwapRows();
+        renderEigenGebruik();
       } else {  
         document.getElementById('authError').style.display = 'block';  
       }  
     }  
 
-    /* LOODS LOGICA */
-    function initLoods() {
-      document.getElementById('loodsPlanten').value = loodsData.planten;
-      document.getElementById('loodsZakjes').value = loodsData.zakjes;
-      document.getElementById('loodsPersonen').value = loodsData.personen;
+    /* SWAP LOGICA & RATIOS */
+    function updateSwapRatios() {
+      loodsRatio = parseInt(document.getElementById('loodsRatioSelect').value) || 4;
+      swapRatio = parseInt(document.getElementById('swapRatioSelect').value) || 5;
+      renderSwapRows();
     }
 
-    function updateLoodsInfo() {
-      loodsData.planten = parseInt(document.getElementById('loodsPlanten').value) || 0;
-      loodsData.zakjes = parseInt(document.getElementById('loodsZakjes').value) || 0;
-      loodsData.personen = parseInt(document.getElementById('loodsPersonen').value) || 0;
+    function renderSwapRows() {
+      const container = document.getElementById('swap-rows-container');
+      container.innerHTML = '';
+
+      swapData.forEach((row, idx) => {
+        const planten = row.planten || 0;
+        const totaalZakjesGemaakt = Math.floor(planten / loodsRatio);
+        const anderZakjes = Math.floor(planten / swapRatio);
+        const eigenZakjes = Math.max(0, totaalZakjesGemaakt - anderZakjes);
+
+        const rowEl = document.createElement('div');
+        rowEl.className = 'swap-row';
+        rowEl.innerHTML = `
+          <input type="text" style="flex:2;" value="${row.name}" placeholder="Naam..." oninput="updateSwapName(${idx}, this.value)">
+          <input type="number" style="flex:1.2;" value="${planten}" placeholder="Planten" oninput="updateSwapPlanten(${idx}, this.value)">
+          <input type="number" style="flex:1.2;" value="${anderZakjes}" readonly>
+          <input type="number" style="flex:1.2;" value="${eigenZakjes}" readonly>
+          <button class="btn-action btn-danger" style="width:40px; padding:0; height:42px;" onclick="removeSwapRow(${idx})">✕</button>
+        `;
+        container.appendChild(rowEl);
+      });
+
+      recalculateLoodsTotals();
+    }
+
+    function addSwapRow() {
+      swapData.push({ name: "", planten: 0 });
+      renderSwapRows();
+    }
+
+    function removeSwapRow(idx) {
+      swapData.splice(idx, 1);
+      renderSwapRows();
+    }
+
+    function updateSwapName(idx, val) {
+      swapData[idx].name = val;
+    }
+
+    function updateSwapPlanten(idx, val) {
+      swapData[idx].planten = parseInt(val) || 0;
+      renderSwapRows();
+    }
+
+    /* EIGEN GEBRUIK LOGICA */
+    function renderEigenGebruik() {
+      const container = document.getElementById('eigen-gebruik-container');
+      container.innerHTML = '';
+
+      eigenGebruikData.forEach((row, idx) => {
+        const rowEl = document.createElement('div');
+        rowEl.className = 'swap-row';
+        rowEl.innerHTML = `
+          <input type="text" style="flex:2;" value="${row.name}" placeholder="Naam lid..." oninput="updateEigenName(${idx}, this.value)">
+          <input type="number" style="flex:1.5;" value="${row.planten}" placeholder="Planten" oninput="updateEigenPlanten(${idx}, this.value)">
+          <input type="number" style="flex:1.5;" value="${row.zakjes}" placeholder="Zakjes" oninput="updateEigenZakjes(${idx}, this.value)">
+          <button class="btn-action btn-danger" style="width:40px; padding:0; height:42px;" onclick="removeEigenGebruikRow(${idx})">✕</button>
+        `;
+        container.appendChild(rowEl);
+      });
+
+      recalculateLoodsTotals();
+    }
+
+    function addEigenGebruikRow() {
+      eigenGebruikData.push({ name: "", planten: 0, zakjes: 0 });
+      renderEigenGebruik();
+    }
+
+    function removeEigenGebruikRow(idx) {
+      eigenGebruikData.splice(idx, 1);
+      renderEigenGebruik();
+    }
+
+    function updateEigenName(idx, val) { eigenGebruikData[idx].name = val; }
+    function updateEigenPlanten(idx, val) { eigenGebruikData[idx].planten = parseInt(val) || 0; recalculateLoodsTotals(); }
+    function updateEigenZakjes(idx, val) { eigenGebruikData[idx].zakjes = parseInt(val) || 0; recalculateLoodsTotals(); }
+
+    /* AUTOMATISCH HERBEREKENING VOOR HET LOODS OVERZICHT */
+    function recalculateLoodsTotals() {
+      let totaalPlanten = 0;
+      let totaalEigenZakjes = 0;
+
+      // Tel Swap gegevens
+      swapData.forEach(row => {
+        const planten = row.planten || 0;
+        totaalPlanten += planten;
+        const totaalZakjesGemaakt = Math.floor(planten / loodsRatio);
+        const anderZakjes = Math.floor(planten / swapRatio);
+        totaalEigenZakjes += Math.max(0, totaalZakjesGemaakt - anderZakjes);
+      });
+
+      // Tel Eigen Gebruik gegevens
+      eigenGebruikData.forEach(row => {
+        totaalPlanten += row.planten || 0;
+        totaalEigenZakjes += row.zakjes || 0;
+      });
+
+      // Bepaal aantal unieke actieve personen
+      const personenSet = new Set();
+      swapData.forEach(r => { if (r.name.trim() !== '') personenSet.add(r.name.trim().toLowerCase()); });
+      eigenGebruikData.forEach(r => { if (r.name.trim() !== '') personenSet.add(r.name.trim().toLowerCase()); });
+
+      // Werk UI in Loods pagina bij
+      document.getElementById('loodsPlanten').value = totaalPlanten;
+      document.getElementById('loodsZakjes').value = totaalEigenZakjes;
+      document.getElementById('loodsPersonen').value = personenSet.size;
     }
 
     /* GROEPSPOT LOGICA */  
@@ -462,17 +641,12 @@
       });  
     }  
   
-    function updatePotName(index, value) {  
-      potData[index].name = value;  
-    }  
-
+    function updatePotName(index, value) { potData[index].name = value; }  
     function updatePotAmount(index, value) {
       const amount = parseFloat(value) || 0;
       potData[index].amount = amount;
       const statusContainer = document.getElementById(`status-container-${index}`);
-      if (statusContainer) {
-        statusContainer.innerHTML = getStatusHtml(amount);
-      }
+      if (statusContainer) statusContainer.innerHTML = getStatusHtml(amount);
     }
   
     function addPotRow() {  
@@ -529,32 +703,17 @@
       renderCategories();
     }
 
-    function updateCatName(catIdx, val) {
-      categoriesData[catIdx].name = val;
-    }
-
-    function addCatItem(catIdx) {
-      categoriesData[catIdx].items.push({ name: "", amount: 1 });
-      renderCategories();
-    }
-
-    function updateCatItemName(catIdx, itemIdx, val) {
-      categoriesData[catIdx].items[itemIdx].name = val;
-    }
-
-    function updateCatItemAmount(catIdx, itemIdx, val) {
-      categoriesData[catIdx].items[itemIdx].amount = parseInt(val) || 0;
-    }
-
-    function removeCatItem(catIdx, itemIdx) {
-      categoriesData[catIdx].items.splice(itemIdx, 1);
-      renderCategories();
-    }
+    function updateCatName(catIdx, val) { categoriesData[catIdx].name = val; }
+    function addCatItem(catIdx) { categoriesData[catIdx].items.push({ name: "", amount: 1 }); renderCategories(); }
+    function updateCatItemName(catIdx, itemIdx, val) { categoriesData[catIdx].items[itemIdx].name = val; }
+    function updateCatItemAmount(catIdx, itemIdx, val) { categoriesData[catIdx].items[itemIdx].amount = parseInt(val) || 0; }
+    function removeCatItem(catIdx, itemIdx) { categoriesData[catIdx].items.splice(itemIdx, 1); renderCategories(); }
   
     // Initiele renders  
-    initLoods();
     renderPot();  
     renderCategories();
+    renderSwapRows();
+    renderEigenGebruik();
   </script>  
 </body>  
 </html>
