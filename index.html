@@ -171,7 +171,7 @@
     }
     .toggle-eye:hover { color: var(--accent-cyan); }
 
-    /* GANGBEZIT CATEGORIE STYLES */
+    /* GANGBEZIT STYLES */
     .cat-block {
       background: rgba(9, 13, 22, 0.5);
       border: 1px solid var(--border);
@@ -185,15 +185,38 @@
       align-items: center;
       margin-bottom: 12px;
     }
-    .cat-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent-cyan);
-    }
     .cat-item {
       display: flex;
       gap: 10px;
       margin-bottom: 8px;
+      align-items: center;
+    }
+
+    /* LOODS STATS GRID */
+    .loods-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 25px;
+    }
+    .stat-card {
+      background: rgba(9, 13, 22, 0.6);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: 14px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      margin-top: 6px;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
   </style>  
 </head>  
@@ -267,10 +290,61 @@
       <div></div>  
     </header>  
     <div class="card">  
-      <h3 style="color: var(--accent-cyan); margin-bottom: 12px;">Materialen & Voorraad</h3>  
-      <p style="color: var(--text-muted);">Loods inventarisbeheer overzicht...</p>  
+      <h3 style="color: var(--accent-cyan); margin-bottom: 18px;">Algemeen Info Overzicht</h3>  
+      
+      <!-- INFO STATS GRID -->
+      <div class="loods-grid">
+        <div class="stat-card">
+          <div class="stat-label">Aantal Planten</div>
+          <input type="number" id="loodsPlanten" value="0" style="margin-top:8px; text-align:center; font-weight:bold; font-size:1.2rem;" oninput="updateLoodsInfo()">
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Aantal Zakjes</div>
+          <input type="number" id="loodsZakjes" value="0" style="margin-top:8px; text-align:center; font-weight:bold; font-size:1.2rem;" oninput="updateLoodsInfo()">
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Personen Ingebracht</div>
+          <input type="number" id="loodsPersonen" value="0" style="margin-top:8px; text-align:center; font-weight:bold; font-size:1.2rem;" oninput="updateLoodsInfo()">
+        </div>
+      </div>
+
+      <!-- NAVIGATIE KNOPPEN -->
+      <div style="display:flex; gap:16px; margin-top: 15px;">
+        <button class="main-btn" style="flex:1;" onclick="switchTab('page-eigen-gebruik')">
+          <span>Eigen Gebruik</span><span>→</span>
+        </button>
+        <button class="main-btn" style="flex:1;" onclick="switchTab('page-swappen')">
+          <span>Swappen</span><span>→</span>
+        </button>
+      </div>
     </div>  
   </div>  
+
+  <!-- EIGEN GEBRUIK PAGE -->
+  <div id="page-eigen-gebruik" class="page">
+    <header>
+      <button class="back-btn" onclick="switchTab('page-loods')">← Terug naar Loods</button>
+      <div class="header-title">Eigen Gebruik</div>
+      <div></div>
+    </header>
+    <div class="card">
+      <h3 style="color: var(--accent-cyan); margin-bottom: 12px;">Eigen Gebruik Registratie</h3>
+      <p style="color: var(--text-muted);">Overzicht van items en voorraden voor eigen gebruik...</p>
+    </div>
+  </div>
+
+  <!-- SWAPPEN PAGE -->
+  <div id="page-swappen" class="page">
+    <header>
+      <button class="back-btn" onclick="switchTab('page-loods')">← Terug naar Loods</button>
+      <div class="header-title">Swappen</div>
+      <div></div>
+    </header>
+    <div class="card">
+      <h3 style="color: var(--accent-cyan); margin-bottom: 12px;">Swap Beheer</h3>
+      <p style="color: var(--text-muted);">Overzicht van te swappen items en ruiltransacties...</p>
+    </div>
+  </div>
   
   <!-- GANGBEZIT PAGE -->  
   <div id="page-gangbezit" class="page">  
@@ -296,9 +370,16 @@
       { name: "Lid 2", amount: 25000 }  
     ];  
 
+    // --- LOODS DATA ---
+    let loodsData = {
+      planten: 120,
+      zakjes: 450,
+      personen: 5
+    };
+
     // --- GANGBEZIT DATA ---
     let categoriesData = [
-      { name: "Voertuigen", items: ["Schafter V12", "Sultan RS"] }
+      { name: "Voertuigen", items: [{ name: "Schafter V12", amount: 2 }, { name: "Sultan RS", amount: 1 }] }
     ];
   
     function switchTab(tabId) {  
@@ -337,6 +418,19 @@
         document.getElementById('authError').style.display = 'block';  
       }  
     }  
+
+    /* LOODS LOGICA */
+    function initLoods() {
+      document.getElementById('loodsPlanten').value = loodsData.planten;
+      document.getElementById('loodsZakjes').value = loodsData.zakjes;
+      document.getElementById('loodsPersonen').value = loodsData.personen;
+    }
+
+    function updateLoodsInfo() {
+      loodsData.planten = parseInt(document.getElementById('loodsPlanten').value) || 0;
+      loodsData.zakjes = parseInt(document.getElementById('loodsZakjes').value) || 0;
+      loodsData.personen = parseInt(document.getElementById('loodsPersonen').value) || 0;
+    }
 
     /* GROEPSPOT LOGICA */  
     function getStatusHtml(amount) {
@@ -406,7 +500,8 @@
         cat.items.forEach((item, itemIdx) => {
           itemsHtml += `
             <div class="cat-item">
-              <input type="text" value="${item}" oninput="updateCatItem(${catIdx}, ${itemIdx}, this.value)">
+              <input type="text" value="${item.name}" placeholder="Item naam..." style="flex: 2;" oninput="updateCatItemName(${catIdx}, ${itemIdx}, this.value)">
+              <input type="number" value="${item.amount}" placeholder="Aantal" style="flex: 1;" oninput="updateCatItemAmount(${catIdx}, ${itemIdx}, this.value)">
               ${currentRole === 'admin' ? `<button class="btn-action btn-danger" onclick="removeCatItem(${catIdx}, ${itemIdx})">✕</button>` : ''}
             </div>
           `;
@@ -425,7 +520,7 @@
     }
 
     function addCategorie() {
-      categoriesData.push({ name: "Nieuwe Categorie", items: [""] });
+      categoriesData.push({ name: "Nieuwe Categorie", items: [{ name: "", amount: 1 }] });
       renderCategories();
     }
 
@@ -439,12 +534,16 @@
     }
 
     function addCatItem(catIdx) {
-      categoriesData[catIdx].items.push("");
+      categoriesData[catIdx].items.push({ name: "", amount: 1 });
       renderCategories();
     }
 
-    function updateCatItem(catIdx, itemIdx, val) {
-      categoriesData[catIdx].items[itemIdx] = val;
+    function updateCatItemName(catIdx, itemIdx, val) {
+      categoriesData[catIdx].items[itemIdx].name = val;
+    }
+
+    function updateCatItemAmount(catIdx, itemIdx, val) {
+      categoriesData[catIdx].items[itemIdx].amount = parseInt(val) || 0;
     }
 
     function removeCatItem(catIdx, itemIdx) {
@@ -452,7 +551,8 @@
       renderCategories();
     }
   
-    // Initiele render  
+    // Initiele renders  
+    initLoods();
     renderPot();  
     renderCategories();
   </script>  
